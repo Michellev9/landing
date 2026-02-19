@@ -1,0 +1,242 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <title>StarNutri</title>
+  <base href="/">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="icon" type="image/x-icon" href="favicon.ico">
+
+  <style>
+    body, html {
+      overflow-x: hidden;
+      font-family: system-ui, sans-serif;
+    }
+
+    #loader {
+      position: fixed;
+      inset: 0;
+      background: linear-gradient(to bottom,#f9efef 0%,#fff7f7 40%,#f9f5e5 75%,#fedd66 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 9999;
+      transition: opacity 0.8s ease, transform 0.8s ease;
+      color: black;
+    }
+
+    #loader.hide {
+      opacity: 0;
+      transform: scale(1.05);
+      pointer-events: none;
+    }
+
+    .loader-content {
+      text-align: center;
+    }
+
+    .video-container {
+      position: relative;
+      width: 280px;
+      height: 280px;
+      margin: 0 auto 1.2rem;
+      border-radius: 50%;
+      overflow: hidden;
+      box-shadow: 0 10px 40px rgba(0,0,0,0.3);
+    }
+
+    .video-loader {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .progress-ring {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      transform: rotate(-90deg);
+    }
+
+    .progress-ring-bg {
+      fill: transparent;
+      stroke: rgba(255,255,255,0.25);
+      stroke-width: 8;
+    }
+
+    .progress-ring-circle {
+      fill: transparent;
+      stroke: #ffffff;
+      stroke-width: 8;
+      stroke-linecap: round;
+      stroke-dasharray: 816;
+      stroke-dashoffset: 816;
+      transition: stroke-dashoffset 0.35s ease-out;
+    }
+
+    .percentage-text {
+      display: block;
+      font-size: 3.8rem;
+      font-weight: 700;
+      color: black;
+      margin-bottom: 0.5rem;
+    }
+
+    .loading-message {
+      font-size: 1.3rem;
+      font-weight: 400;
+      opacity: 0.9;
+      min-height: 1.6em;
+      transition: opacity 0.6s ease;
+    }
+
+    .loading-message.fade {
+      opacity: 0;
+    }
+
+    @media (max-width: 400px), (max-height: 500px) {
+      .video-container { width: 220px; height: 220px; }
+      .percentage-text { font-size: 3rem; }
+      .loading-message { font-size: 1.1rem; }
+    }
+  </style>
+</head>
+
+<body>
+
+  <app-root></app-root>
+
+  <div id="loader">
+    <div class="loader-content">
+
+      <div class="video-container">
+        <video 
+          id="loadingVideo"
+          class="video-loader"
+          autoplay
+          muted
+          playsinline
+          src="loading.mp4">
+        </video>
+
+        <svg class="progress-ring" viewBox="0 0 280 280">
+          <circle class="progress-ring-bg" cx="140" cy="140" r="130" />
+          <circle class="progress-ring-circle" cx="140" cy="140" r="130" id="progressCircle" />
+        </svg>
+      </div>
+
+      <span class="percentage-text" id="percentText">0%</span>
+      <div class="loading-message" id="loadingMsg"></div>
+
+    </div>
+  </div>
+
+  <script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const loader     = document.getElementById('loader');
+    const video      = document.getElementById('loadingVideo');
+    const circle     = document.getElementById('progressCircle');
+    const percentTxt = document.getElementById('percentText');
+    const msgEl      = document.getElementById('loadingMsg');
+
+    if (!video || !circle || !percentTxt || !msgEl) return;
+
+    const radius = 130;
+    const circumference = 2 * Math.PI * radius;
+    circle.style.strokeDasharray = circumference;
+
+    function setProgress(percent) {
+      const progress = Math.min(100, Math.max(0, percent));
+      const offset = circumference - (progress / 100) * circumference;
+      circle.style.strokeDashoffset = offset;
+      percentTxt.textContent = Math.round(progress) + '%';
+    }
+
+    // Frases que rotan debajo del porcentaje
+    const messages = [
+      "Preparando todo para ti...",
+      "Un momento, casi listo...",
+      "Gracias por esperar"
+    ];
+
+    let msgIndex = 0;
+
+    function updateMessage() {
+      msgEl.classList.add('fade');
+      setTimeout(() => {
+        msgEl.textContent = messages[msgIndex];
+        msgEl.classList.remove('fade');
+        msgIndex = (msgIndex + 1) % messages.length;
+      }, 600);
+    }
+
+    // Mostrar la primera frase INMEDIATAMENTE
+    msgEl.textContent = messages[0];          // ← Primera frase visible desde el inicio
+    setTimeout(() => {
+      msgEl.classList.remove('fade');         // Aseguramos que aparezca sin fade inicial
+    }, 100);
+
+    // Luego rotamos normalmente
+    const msgInterval = setInterval(updateMessage, 200);
+
+    // Progreso real del video
+    let usingVideoProgress = false;
+
+    video.addEventListener('loadedmetadata', () => {
+      if (video.duration > 0 && video.duration < 30) {
+        usingVideoProgress = true;
+      }
+    });
+
+    video.addEventListener('timeupdate', () => {
+      if (usingVideoProgress && video.duration) {
+        const percent = (video.currentTime / video.duration) * 100;
+        setProgress(percent);
+        if (percent >= 98) hideLoader();
+      }
+    });
+
+    // Simulación como fallback
+    let simulatedProgress = 0;
+    const simInterval = setInterval(() => {
+      if (usingVideoProgress) return;
+
+      const remaining = 100 - simulatedProgress;
+      if (remaining <= 0) {
+        clearInterval(simInterval);
+        setProgress(100);
+        hideLoader();
+        return;
+      }
+
+      const step = Math.max(1.5, remaining * 0.07) * (0.7 + Math.random() * 0.6);
+      simulatedProgress = Math.min(100, simulatedProgress + step);
+      setProgress(simulatedProgress);
+    }, 180);
+
+    function hideLoader() {
+      setProgress(100);
+      clearInterval(msgInterval);
+      msgEl.textContent = "¡Listo!";
+      loader.classList.add('hide');
+      setTimeout(() => loader.remove(), 900);
+    }
+
+    // Seguridad
+    setTimeout(() => {
+      if (simulatedProgress < 100) {
+        setProgress(100);
+        hideLoader();
+      }
+    }, 10000);
+
+    video.addEventListener('error', () => {
+      usingVideoProgress = false;
+    });
+  });
+  </script>
+
+</body>
+</html>

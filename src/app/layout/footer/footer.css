@@ -1,0 +1,44 @@
+.footer{
+  background:#1f2937;
+  color:white;
+  padding-top: 3rem;
+}
+
+.footer-container{
+  display:grid;
+  grid-template-columns: repeat(3,1fr);
+  gap:2rem;
+  max-width:1200px;
+  margin:auto;
+  padding: 0 2rem;
+}
+
+.footer-logo{
+  width: 260px;
+  margin-bottom:.5rem;
+}
+
+
+.footer-links h4,
+.footer-social h4{
+  margin-bottom: 1rem;
+}
+
+.footer-links a{
+  display:block;
+  color:#cbd5e1;
+  margin-bottom:.5rem;
+  cursor: pointer;
+  text-decoration: none;
+}
+
+.footer-links a:hover{
+  color:white;
+}
+
+.footer-social .icons img{
+  width: 30px;
+  margin-right:1.5rem;
+  cursor:pointer;
+}
+

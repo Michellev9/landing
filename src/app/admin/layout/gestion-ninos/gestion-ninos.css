@@ -1,0 +1,429 @@
+/* Mantener exactamente las mismas variables y estilos base del dashboard original */
+.dashboard-content {
+  margin-left: 260px;
+  padding: 24px 32px;
+  min-height: 100vh;
+  background: #f8fafc;
+}
+
+.title {
+  font-size: 2.25rem;
+  font-weight: 700;
+  margin: 0 0 2rem 0;
+  color: #111827;
+}
+
+.cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 1.5rem;
+  margin-bottom: 2.5rem;
+}
+.card {
+  background: white;
+  border-radius: 12px;
+  padding: 1.5rem;
+  box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1), 0 2px 4px -1px rgba(0,0,0,0.06);
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.card.green    { border-left: 5px solid var(--green); }
+.card.blue     { border-left: 5px solid var(--blue); }
+.card.purple   { border-left: 5px solid var(--purple); }
+.card.orange   { border-left: 5px solid var(--orange); }
+.icon {
+  font-size: 2.5rem;
+  width: 64px;
+  height: 64px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0,0,0,0.04);
+  border-radius: 10px;
+}
+
+.card-content h4 {
+  margin: 0 0 0.25rem;
+  font-size: 0.95rem;
+  color: #64748b;
+}
+
+.card-content h2 {
+  margin: 0;
+  font-size: 2.25rem;
+  line-height: 1;
+  color: #111827;
+}
+/* ... mantener todas las clases .card, .icon, .card-content, .trend ... del diseño original ... */
+
+/* Ajustes para la cuarta tarjeta (orange) */
+.trend.warning {
+  color: #f59e0b;
+}
+.trend {
+  font-size: 0.875rem;
+  color: #10b981;
+  font-weight: 500;
+}
+
+/* Formulario agregar */
+.add-form {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-bottom: 1.5rem;
+}
+
+.add-form input {
+  flex: 1;
+  min-width: 140px;
+  padding: 10px 12px;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  font-size: 1rem;
+}
+
+.add-form .btn-add {
+  padding: 0 1.5rem;
+  background: #3b82f6;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-weight: 500;
+  cursor: pointer;
+}
+
+.add-form .btn-add:hover {
+  background: #2563eb;
+}
+
+/* ---------------------------------------------------
+   Estilo general de botones - alineado con el dashboard
+   --------------------------------------------------- */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 0.6rem 1.2rem;
+  font-size: 0.95rem;
+  font-weight: 500;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  border: none;
+  white-space: nowrap;
+}
+
+.btn:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+}
+
+/* Primario - para acciones principales (como + Nuevo niño) */
+.btn-primary {
+  background: #3b82f6;
+  color: white;
+}
+
+.btn-primary:hover {
+  background: #2563eb;
+}
+
+/* Outline / Secundarios con borde */
+.btn-outline {
+  background: transparent;
+  border: 1px solid #cbd5e1;
+  color: #1e293b;
+}
+
+.btn-outline:hover {
+  background: #f1f5f9;
+  border-color: #94a3b8;
+}
+
+/* Variantes por acción */
+.btn-outline.edit {
+  border-color: #3b82f6;
+  color: #1d4ed8;
+}
+
+.btn-outline.edit:hover {
+  background: #eff6ff;
+  border-color: #2563eb;
+}
+
+.btn-outline.delete {
+  border-color: #ef4444;
+  color: #b91c1c;
+}
+
+.btn-outline.delete:hover {
+  background: #fee2e2;
+  border-color: #dc2626;
+}
+
+.btn-outline.activate {
+  border-color: #10b981;
+  color: #065f46;
+}
+
+.btn-outline.activate:hover {
+  background: #d1fae5;
+  border-color: #059669;
+}
+
+.btn-outline.deactivate {
+  border-color: #f59e0b;
+  color: #92400e;
+}
+
+.btn-outline.deactivate:hover {
+  background: #fef3c7;
+  border-color: #d97706;
+}
+
+/* Botón de texto simple (cancelar selección) */
+.btn-link {
+  background: none;
+  border: none;
+  color: #64748b;
+  font-weight: 500;
+  padding: 0.6rem 0.8rem;
+  text-decoration: underline;
+}
+
+.btn-link:hover {
+  color: #3b82f6;
+  text-decoration: none;
+}
+
+/* Contador de selección */
+.selection-count {
+  font-size: 0.9rem;
+  color: #64748b;
+  margin-right: 1rem;
+  font-weight: 500;
+}
+
+/* Layout del header con acciones */
+.header-with-actions {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 1rem;
+  margin-bottom: 1.25rem;
+}
+
+.bulk-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+}
+
+/* Responsive - cuando la pantalla es pequeña */
+@media (max-width: 768px) {
+  .header-with-actions {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  
+  .bulk-actions {
+    justify-content: center;
+  }
+  
+  .btn {
+    flex: 1;
+    min-width: 120px;
+  }
+}
+
+/* Tabla */
+.table-wrapper {
+  overflow-x: auto;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+th, td {
+  padding: 1rem 1.25rem;
+  text-align: left;
+}
+
+th {
+  color: #64748b;
+  text-transform: uppercase;
+  font-size: 0.8rem;
+  font-weight: 600;
+}
+
+.actions-cell {
+  white-space: nowrap;
+}
+
+.btn-edit, .btn-delete {
+  border: none;
+  background: none;
+  font-size: 1.1rem;
+  cursor: pointer;
+  padding: 4px 8px;
+}
+
+.btn-edit  { color: #3b82f6; }
+.btn-delete { color: #ef4444; }
+
+.btn-edit:hover  { color: #2563eb; }
+.btn-delete:hover { color: #dc2626; }
+
+/* Mantener .progress, .progress-bar, .status, .side, .actions, .alerts, etc. exactamente igual que el original */
+
+.actions, .alerts {
+  background: white;
+  border-radius: 12px;
+  padding: 1.5rem;
+  box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1);
+}
+
+.actions h3, .alerts h3 {
+  margin: 0 0 1.25rem 0;
+  font-size: 1.125rem;
+}
+
+.actions button {
+  width: 100%;
+  padding: 0.85rem;
+  margin-bottom: 0.75rem;
+  border: none;
+  border-radius: 8px;
+  background: #f1f5f9;
+  color: #111827;
+  font-weight: 500;
+  cursor: pointer;
+}
+
+.actions button:hover {
+  background: #e2e8f0;
+}
+
+/* Alertas */
+.alert {
+  padding: 0.85rem 1rem;
+  border-radius: 8px;
+  margin-bottom: 0.75rem;
+  font-size: 0.95rem;
+}
+
+.alert.warning {
+  background: #fef3c7;
+  color: #92400e;
+}
+
+.table-section{
+  background: white;
+  border-radius: 12px;
+  padding: 1.5rem;
+  box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1);
+  margin-bottom: 2rem;
+}
+
+.table-section h3 {
+  margin: 0 0 1.25rem 0;
+  font-size: 1.25rem;
+}
+
+.table-wrapper {
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+th, td {
+  padding: 1rem 1.25rem;
+  text-align: left;
+}
+
+th {
+  color: #64748b;
+  text-transform: uppercase;
+  font-size: 0.8rem;
+}
+
+.progress {
+  height: 8px;
+  background: #e2e8f0;
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.progress-bar {
+  height: 100%;
+  background: var(--primary);
+  transition: width 0.4s ease;
+}
+
+.status {
+  padding: 0.35rem 0.85rem;
+  border-radius: 999px;
+  font-size: 0.8rem;
+  font-weight: 600;
+}
+
+.status.active {
+  background: #d1fae5;
+  color: #065f46;
+}
+
+.status.inactive {
+  background: #fee2e2;
+  color: #991b1b;
+}
+.chart {
+  background: white;
+  border-radius: 12px;
+  padding: 1.5rem;
+  box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1);
+}
+
+.range-buttons {
+  display: flex;
+  gap: 10px;
+  justify-content: flex-end;
+  margin-bottom: 1rem;
+}
+
+.range-buttons button {
+  padding: 8px 16px;
+  border: none;
+  border-radius: 6px;
+  background: #e2e8f0;
+  color: #111827;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.range-buttons button:hover {
+  background: #cbd5e1;
+}
+
+.range-buttons button.active {
+  background: #3b82f6;
+  color: white;
+}
+
+.chart-container {
+  position: relative;
+  height: 340px;
+  width: 100%;
+}

@@ -1,0 +1,252 @@
+
+/* Contenedor principal del dashboard - ¡IMPORTANTE para no quedar detrás del sidebar! */
+.dashboard-content {
+  margin-left: 260px;
+  padding: 24px 32px;
+  min-height: 100vh;
+  background: #f8fafc;
+}
+
+/* Título */
+.title {
+  font-size: 2.25rem;
+  font-weight: 700;
+  margin: 0 0 2rem 0;
+  color: #111827;
+}
+
+/* Tarjetas KPI */
+.cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 1.5rem;
+  margin-bottom: 2.5rem;
+}
+
+.card {
+  background: white;
+  border-radius: 12px;
+  padding: 1.5rem;
+  box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1), 0 2px 4px -1px rgba(0,0,0,0.06);
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.card.green    { border-left: 5px solid var(--green); }
+.card.blue     { border-left: 5px solid var(--blue); }
+.card.purple   { border-left: 5px solid var(--purple); }
+.card.orange   { border-left: 5px solid var(--orange); }
+
+.icon {
+  font-size: 2.5rem;
+  width: 64px;
+  height: 64px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0,0,0,0.04);
+  border-radius: 10px;
+}
+
+.card-content h4 {
+  margin: 0 0 0.25rem;
+  font-size: 0.95rem;
+  color: #64748b;
+}
+
+.card-content h2 {
+  margin: 0;
+  font-size: 2.25rem;
+  line-height: 1;
+  color: #111827;
+}
+
+.trend {
+  font-size: 0.875rem;
+  color: #10b981;
+  font-weight: 500;
+}
+
+/* Grid central */
+.grid {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: 1.75rem;
+  margin-bottom: 2.5rem;
+}
+
+@media (max-width: 1024px) {
+  .grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Chart */
+.chart {
+  background: white;
+  border-radius: 12px;
+  padding: 1.5rem;
+  box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1);
+}
+
+.chart h3 {
+  margin: 0 0 1.25rem 0;
+  font-size: 1.25rem;
+}
+
+.chart canvas {
+  width: 100% !important;
+  height: 340px !important;
+}
+
+/* Panel lateral derecho */
+.side {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.actions, .alerts {
+  background: white;
+  border-radius: 12px;
+  padding: 1.5rem;
+  box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1);
+}
+
+.actions h3, .alerts h3 {
+  margin: 0 0 1.25rem 0;
+  font-size: 1.125rem;
+}
+
+.actions button {
+  width: 100%;
+  padding: 0.85rem;
+  margin-bottom: 0.75rem;
+  border: none;
+  border-radius: 8px;
+  background: #f1f5f9;
+  color: #111827;
+  font-weight: 500;
+  cursor: pointer;
+}
+
+.actions button:hover {
+  background: #e2e8f0;
+}
+
+/* Alertas */
+.alert {
+  padding: 0.85rem 1rem;
+  border-radius: 8px;
+  margin-bottom: 0.75rem;
+  font-size: 0.95rem;
+}
+
+.alert.warning {
+  background: #fef3c7;
+  color: #92400e;
+}
+
+.table-section{
+  background: white;
+  border-radius: 12px;
+  padding: 1.5rem;
+  box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1);
+  margin-bottom: 2rem;
+}
+
+.table-section h3 {
+  margin: 0 0 1.25rem 0;
+  font-size: 1.25rem;
+}
+
+.table-wrapper {
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+th, td {
+  padding: 1rem 1.25rem;
+  text-align: left;
+}
+
+th {
+  color: #64748b;
+  text-transform: uppercase;
+  font-size: 0.8rem;
+}
+
+.progress {
+  height: 8px;
+  background: #e2e8f0;
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.progress-bar {
+  height: 100%;
+  background: var(--primary);
+  transition: width 0.4s ease;
+}
+
+.status {
+  padding: 0.35rem 0.85rem;
+  border-radius: 999px;
+  font-size: 0.8rem;
+  font-weight: 600;
+}
+
+.status.active {
+  background: #d1fae5;
+  color: #065f46;
+}
+
+.status.inactive {
+  background: #fee2e2;
+  color: #991b1b;
+}
+.chart {
+  background: white;
+  border-radius: 12px;
+  padding: 1.5rem;
+  box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1);
+}
+
+.range-buttons {
+  display: flex;
+  gap: 10px;
+  justify-content: flex-end;
+  margin-bottom: 1rem;
+}
+
+.range-buttons button {
+  padding: 8px 16px;
+  border: none;
+  border-radius: 6px;
+  background: #e2e8f0;
+  color: #111827;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.range-buttons button:hover {
+  background: #cbd5e1;
+}
+
+.range-buttons button.active {
+  background: #3b82f6;
+  color: white;
+}
+
+.chart-container {
+  position: relative;
+  height: 340px;
+  width: 100%;
+}

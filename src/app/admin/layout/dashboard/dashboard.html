@@ -1,0 +1,117 @@
+<!-- Este es el contenedor que SOLUCIONA el problema -->
+<main class="dashboard-content">
+
+  <h1 class="title">Dashboard StarNutri</h1>
+
+  <!-- KPI CARDS -->
+  <section class="cards">
+    <div class="card green">
+      <div class="icon">👶</div>
+      <div class="card-content">
+        <h4>Usuarios</h4>
+        <h2>120</h2>
+        <span class="trend">+12% este mes</span>
+      </div>
+    </div>
+
+    <div class="card blue">
+      <div class="icon">🍎</div>
+      <div class="card-content">
+        <h4>Niños activos</h4>
+        <h2>98</h2>
+        <span class="trend">Alta participación</span>
+      </div>
+    </div>
+
+    <div class="card purple">
+      <div class="icon">📊</div>
+      <div class="card-content">
+        <h4>Progreso nutricional</h4>
+        <h2>78%</h2>
+        <span class="trend">Promedio general</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- GRID CENTRAL -->
+  <div class="grid">
+    <!-- CHART -->
+    <div class="chart">
+      <h3>Uso de la app</h3>
+
+      <div class="range-buttons">
+    <button 
+      [class.active]="activeRange === 'week'"
+      (click)="changeRange('week')">
+      Semana
+    </button>
+    <button 
+      [class.active]="activeRange === 'month'"
+      (click)="changeRange('month')">
+      Mes
+    </button>
+    <button 
+      [class.active]="activeRange === 'year'"
+      (click)="changeRange('year')">
+      Año
+    </button>
+  </div>
+      <canvas id="chart"></canvas>
+    </div>
+
+    <!-- PANEL LATERAL DERECHO -->
+    <aside class="side">
+
+      <div class="alerts">
+        <h3>Alertas</h3>
+        <p class="alert warning">⚠️ 12 niños con bajo consumo de frutas</p>
+        <p class="alert warning">⚠️ 8 padres sin actividad semanal</p>
+      </div>
+    </aside>
+  </div>
+
+  <section class="table-section">
+    <h3>Usuarios recientes</h3>
+    <div class="table-wrapper">
+      <table>
+        <thead>
+          <tr>
+            <th>Nombre</th>
+            <th>Progreso</th>
+            <th>Estado</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Juan</td>
+            <td>
+              <div class="progress">
+                <div class="progress-bar" style="width: 80%"></div>
+              </div>
+            </td>
+            <td class="status active">Activo</td>
+          </tr>
+          <tr>
+            <td>María</td>
+            <td>
+              <div class="progress">
+                <div class="progress-bar" style="width: 65%"></div>
+              </div>
+            </td>
+            <td class="status active">Activo</td>
+          </tr>
+          <tr>
+            <td>Carlos</td>
+            <td>
+              <div class="progress">
+                <div class="progress-bar" style="width: 40%"></div>
+              </div>
+            </td>
+            <td class="status inactive">Inactivo</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+</main>

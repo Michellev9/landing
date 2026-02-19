@@ -1,0 +1,18 @@
+.landing-content {
+  min-height: calc(100vh - 140px);
+}
+
+.landing-content {
+  animation: fadeIn 0.6s ease-in-out;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

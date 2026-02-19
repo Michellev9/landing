@@ -1,0 +1,25 @@
+<aside class="sidebar">
+  <div class="logo-wrapper">
+    <img src="logo.png" class="logo"/>
+  </div>
+
+  <nav class="main-nav">
+
+    <div class="nav-section">
+      <p class="nav-title">General</p>
+      <a (click)="navigateTo('/admin/dashboard')" class="nav-link">🏠 Dashboard</a>
+    </div>
+
+    <div class="nav-section">
+      <p class="nav-title">Gestión</p>
+      <a (click)="navigateTo('/admin/gestion-ninos')" class="nav-link">👨‍👩‍👧 Usuarios</a>
+    </div>
+
+
+    <div class="nav-section">
+      <p class="nav-title">Sistema</p>
+      <a (click)="navigateTo('/admin/configuracion')" class="nav-link">⚙️ Configuración</a>
+    </div>
+
+  </nav>
+</aside>
