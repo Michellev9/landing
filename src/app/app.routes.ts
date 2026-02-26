@@ -6,9 +6,6 @@ import { DashboardLayout } from './layouts/dashboard-layout/dashboard-layout';
 
 /* Landing Pages */
 import { Inicio } from './pages/inicio/inicio';
-import { Nosotros } from './pages/nosotros/nosotros';
-import { Caracteristicas } from './pages/caracteristicas/caracteristicas';
-import { Contacto } from './pages/contacto/contacto';
 import { Login } from './auth/login/login';
 
 /* Dashboard Pages */
@@ -25,9 +22,6 @@ export const routes: Routes = [
     component: LandingLayout,
     children: [
       { path: '', component: Inicio },
-      { path: 'nosotros', component: Nosotros },
-      { path: 'caracteristicas', component: Caracteristicas },
-      { path: 'contacto', component: Contacto },
       { path: 'login', component: Login }
     ]
   },

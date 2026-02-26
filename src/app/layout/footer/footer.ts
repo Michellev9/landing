@@ -1,12 +1,20 @@
 import { Component } from '@angular/core';
-import { RouterLink, RouterLinkActive } from '@angular/router';
 
 @Component({
   selector: 'app-footer',
-  imports: [RouterLink],
   templateUrl: './footer.html',
-  styleUrl: './footer.css',
+  styleUrls: ['./footer.css']
 })
 export class Footer {
+
+  scrollTo(id: string) {
+    const el = document.getElementById(id);
+    if (!el) return;
+
+    const yOffset = -110;
+    const y = el.getBoundingClientRect().top + window.pageYOffset + yOffset;
+
+    window.scrollTo({ top: y, behavior: 'smooth' });
+  }
 
 }

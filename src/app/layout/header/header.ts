@@ -11,15 +11,15 @@ export class Header {
 
   constructor(private router: Router) {}
 
-  scrollTo(section: string) {
-    if (this.router.url !== '/') {
-      this.router.navigate(['/']).then(() => {
-        setTimeout(() => this.scroll(section), 100);
-      });
-    } else {
-      this.scroll(section);
-    }
-  }
+scrollTo(id: string) {
+  const el = document.getElementById(id);
+  if (!el) return;
+
+  const yOffset = -110; // altura del header
+  const y = el.getBoundingClientRect().top + window.pageYOffset + yOffset;
+
+  window.scrollTo({ top: y, behavior: 'smooth' });
+}
 
   private scroll(section: string) {
   const element = document.getElementById(section);
@@ -39,5 +39,19 @@ export class Header {
   } else {
     console.warn(`No encontrado #${section}`);
   }
+}
+
+menuOpen = false;
+
+toggleMenu() {
+  this.menuOpen = !this.menuOpen;
+  const menu = document.querySelector('.menu');
+  menu?.classList.toggle('active');
+}
+
+closeMenu() {
+  this.menuOpen = false;
+  const menu = document.querySelector('.menu');
+  menu?.classList.remove('active');
 }
 }

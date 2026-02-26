@@ -1,23 +1,36 @@
-<footer class="footer">
+<footer class="footer glass">
   <div class="footer-container">
-    <div class="footer-brand">
+
+    <!-- BRAND -->
+    <div class="footer-brand" (click)="scrollTo('inicio')">
       <img src="logo.png" class="footer-logo">
-    </div>
-    <div class="footer-links">
-      <h4>Secciones</h4>
-      <a routerLink="/">Inicio</a>
-      <a routerLink="/nosotros">Sobre Nosotros</a>
-      <a routerLink="/caracteristicas">Características</a>
-      <a routerLink="/contacto">Contacto</a>
+      <span>StarNutri</span>
     </div>
 
+    <!-- LINKS -->
+    <div class="footer-links">
+      <h4>Secciones</h4>
+      <a (click)="scrollTo('inicio')">Inicio</a>
+      <a (click)="scrollTo('perfiles')">Perfiles</a>
+      <a (click)="scrollTo('nosotros')">Sobre StarNutri</a>
+      <a (click)="scrollTo('como-funciona')">¿Cómo funciona?</a>
+      <a (click)="scrollTo('planes')">Planes</a>
+      <a (click)="scrollTo('contacto')">Contacto</a>
+    </div>
+
+    <!-- SOCIAL -->
     <div class="footer-social">
       <h4>Síguenos</h4>
       <div class="icons">
-        <a href="https://www.instagram.com/starnutri.mx/?utm_source=ig_web_button_share_sheet">
+        <a href="https://www.instagram.com/starnutri.mx/?utm_source=ig_web_button_share_sheet" target="_blank">
           <img src="https://cdn-icons-png.flaticon.com/512/733/733558.png">
         </a>
       </div>
     </div>
+
+  </div>
+
+  <div class="footer-copy">
+    © 2026 StarNutri — Todos los derechos reservados
   </div>
 </footer>

@@ -1,6 +1,9 @@
-<header class="topbar">
-  <img src="logo.png" alt="Logo" class="logo"/>
-  <div class="brand">StarNutri</div>
+<header class="topbar glass">
+  <div class="topbar-left" (click)="scrollTo('inicio')">
+    <img src="logo.png" alt="Logo StarNutri" class="logo" />
+    <span class="brand">StarNutri</span>
+  </div>
+
   <nav class="menu">
     <a (click)="scrollTo('inicio')">Inicio</a>
     <a (click)="scrollTo('perfiles')">Perfiles</a>
@@ -8,6 +11,12 @@
     <a (click)="scrollTo('como-funciona')">¿Cómo funciona?</a>
     <a (click)="scrollTo('planes')">Planes</a>
     <a (click)="scrollTo('contacto')">Contacto</a>
-    <a routerLink="/login" class="login-btn">Iniciar sesión</a>
+
+    <a routerLink="/login" class="login-btn" (click)="closeMenu()">Iniciar sesión</a>
   </nav>
+
+  <!-- Botón móvil -->
+  <div class="menu-toggle" (click)="toggleMenu()">
+    ☰
+  </div>
 </header>

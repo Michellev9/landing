@@ -1,22 +1,23 @@
-import { Component, signal } from '@angular/core';
-import { provideRouter, RouterOutlet, withInMemoryScrolling } from '@angular/router';
-import { routes } from './app.routes';
+import { Component } from '@angular/core';
+import { Router, NavigationEnd, RouterOutlet } from '@angular/router';
+import { filter } from 'rxjs/operators';
 
 @Component({
   selector: 'app-root',
+  standalone: true,
   imports: [RouterOutlet],
-  templateUrl: './app.html',
-  styleUrl: './app.css'
+  templateUrl: './app.html'
 })
 export class App {
-  protected readonly title = signal('starnutri-web');
-  
+
+  showLayout = true;
+
+  constructor(public router: Router) {
+    this.router.events
+      .pipe(filter(event => event instanceof NavigationEnd))
+      .subscribe((event: NavigationEnd) => {
+        console.log('Ruta actual:', event.urlAfterRedirects);
+        this.showLayout = !event.urlAfterRedirects.includes('login');
+      });
+  }
 }
-
-provideRouter(routes, withInMemoryScrolling({
-  scrollPositionRestoration: 'enabled',
-  anchorScrolling: 'enabled'
-}))
-
-
-

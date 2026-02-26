@@ -9,6 +9,7 @@ import Chart from 'chart.js/auto';
 export class Dashboard implements AfterViewInit, OnDestroy {
 
   private chartInstance: Chart | null = null;
+  
 
   // Datos de ejemplo para cada rango
   private chartData = {

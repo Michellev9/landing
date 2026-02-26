@@ -1,191 +1,304 @@
-* {
-  box-sizing: border-box;
-  
+.stars-background {
+  position: fixed;
+  inset: 0;
+  z-index: -2;
+  background: linear-gradient(90deg,
+      #e0f2e9,
+      /* verde menta muy suave – frescura */
+      #ffd7a5,
+      /* naranja claro – entusiasmo infantil */
+      #fffde7,
+      /* amarillo cremoso – calidez y sol */
+      #d4f4dd,
+      /* verde más brillante */
+      #e0f2e9
+      /* loop verde */
+    );
+  background-size: 500% 500%;
+  animation: fruityBreeze 24s linear infinite;
+  /* más lenta y relajante */
 }
 
-.login-page {
-  min-height: 100vh;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  position: relative;
-  background: linear-gradient(to bottom, #f9efef 0%, #fff7f7 40%, #f9f5e5 75%, #fedd66 100%);
-  font-family: system-ui, -apple-system, sans-serif;
-  overflow-x: hidden;
-  padding: 1rem;
+@keyframes fruityBreeze {
+  0% {
+    background-position: 0% 50%;
+  }
+
+  100% {
+    background-position: -500% 50%;
+  }
 }
 
-.bubbles {
+
+/* Capas de estrellas (más pequeñas y brillantes para fondo claro) */
+.stars-layer {
   position: absolute;
   inset: 0;
-  pointer-events: none;
+  background: transparent;
 }
 
-.bubble {
+/* Estrellas base (puntos fijos) */
+.stars-layer.base {
+  background-image:
+    radial-gradient(circle at 10% 20%, #fff 1.5px, transparent 2px),
+    radial-gradient(circle at 30% 70%, #fff 1px, transparent 1.5px),
+    radial-gradient(circle at 60% 30%, #fff 2px, transparent 3px),
+    radial-gradient(circle at 80% 80%, #fff 1.2px, transparent 2px),
+    radial-gradient(circle at 45% 45%, #fff 1.5px, transparent 2.5px);
+  background-size: 120px 120px, 180px 180px, 140px 140px, 200px 200px, 160px 160px;
+  opacity: 0.6;
+}
+
+/* Parpadeo suave y aleatorio */
+.stars-layer.twinkling {
+  background-image:
+    radial-gradient(circle, #ffffff 1px, transparent 2px),
+    radial-gradient(circle, #ffeb3b 1.2px, transparent 2.5px),
+    /* toquecito amarillo */
+    radial-gradient(circle, #ff80ab 1px, transparent 2px);
+  /* rosa brillante */
+  background-size: 100px 100px, 150px 150px, 130px 130px;
+  opacity: 0.7;
+  animation: twinklePastel 10s infinite ease-in-out;
+}
+
+@keyframes twinklePastel {
+
+  0%,
+  100% {
+    opacity: 0.5;
+    transform: scale(1);
+  }
+
+  25% {
+    opacity: 0.9;
+    transform: scale(1.1);
+  }
+
+  50% {
+    opacity: 0.6;
+    transform: scale(0.95);
+  }
+
+  75% {
+    opacity: 0.85;
+    transform: scale(1.05);
+  }
+}
+
+/* Movimiento lento y diagonal (sensación mágica) */
+.stars-layer.moving {
+  background-image:
+    radial-gradient(circle, #ffffff 1px, transparent 1.5px),
+    radial-gradient(circle, #ffe082 1px, transparent 1.5px);
+  /* naranja suave */
+  background-size: 80px 80px, 110px 110px;
+  opacity: 0.5;
+  animation: drift 90s linear infinite;
+}
+
+@keyframes drift {
+  from {
+    transform: translate(0, 0);
+  }
+
+  to {
+    transform: translate(-180px, -120px);
+  }
+
+  /* movimiento diagonal suave */
+}
+
+/* Elementos Flotantes Interactivos (Frutas y Estrellas) */
+.floating-item-wrapper {
   position: absolute;
-  background: rgba(255, 255, 255, 0.5);
-  border-radius: 50%;
-  box-shadow: 0 8px 32px rgba(254, 221, 102, 0.15);
-  animation: float 20s infinite ease-in-out;
+  z-index: -1;
+  pointer-events: none;
+  will-change: transform, top;
 }
 
-.b1 { width: 200px; height: 200px; top: 10%; left: 5%; }
-.b2 { width: 140px; height: 140px; bottom: 15%; right: 10%; }
-.b3 { width: 240px; height: 240px; top: 50%; right: 8%; animation-delay: 8s; }
-
-@keyframes float {
-  0%, 100% { transform: translate(0, 0); }
-  50% { transform: translate(40px, -25px); }
+.floating-item {
+  position: absolute;
+  user-select: none;
+  filter: drop-shadow(0 6px 12px rgba(0, 0, 0, 0.15)) drop-shadow(0 0 8px rgba(255, 255, 255, 0.3));
+  animation: floatUpDown 5s ease-in-out infinite alternate;
 }
 
+/* Flotación natural */
+@keyframes floatUpDown {
+  0% {
+    transform: translateY(-30px) rotate(-15deg) scale(.95);
+  }
+
+  100% {
+    transform: translateY(30px) rotate(15deg) scale(1.05);
+  }
+}
+
+
+
+/* CONTENEDOR GENERAL */
 .login-container {
-  width: 100%;
-  max-width: 480px;          /* más ancho que antes */
- margin-top: 80px;
-  padding: 1rem;
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow-x: hidden;
 }
 
 .login-card {
-  background: rgba(255, 255, 255, 0.85);
+  width: 100%;
+  padding: 3rem 3rem;
+  border-radius: 50px;
+  background: rgba(255,255,255,.45);
   backdrop-filter: blur(12px);
-  border-radius: 20px;
-  padding: 2.5rem 1.8rem;    /* menos padding lateral en móvil */
-  box-shadow: 0 15px 40px rgba(254, 221, 102, 0.2);
-  border: 1px solid rgba(254, 221, 102, 0.25);
-  text-align: center;
+  border: 3px solid rgba(255,255,255,.7);
+  box-shadow: 0 10px 30px rgba(0,0,0,.08);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  overflow: visible; 
+  height: auto;           
+  min-height: 100%;       
+  box-sizing: border-box;
 }
 
-.logo {
-  font-size: clamp(2.5rem, 10vw, 3.8rem);
-  font-weight: 800;
-  color: #fedd66;
-  margin-bottom: 0.4rem;
+.logo { font-size: clamp(3.2rem, 9vw, 4.5rem); /* un toque más pequeño para ahorrar altura */ 
+  font-weight: 900; 
+  background: linear-gradient(90deg, #ff6ba1, #c29eff, #5dccff, #fedd66); 
+  -webkit-background-clip: text; 
+  -webkit-text-fill-color: transparent; 
+  text-align: center; 
+  background-size: 200% auto; 
+  animation: shine 8s linear infinite; 
 }
 
+h1 { 
+  font-size: clamp(1.8rem, 5vw, 2.3rem); 
+  color: #000; 
+  font-weight: 700; 
+  text-align: center; 
+  margin: 0 0 0.5rem; 
+} 
 
-h1 {
-  font-size: clamp(1.8rem, 7vw, 2.2rem);
-  color: #000000;
-  margin: 0 0 0.5rem;
-  font-weight: 700;
-}
+.subtitle { 
+  color: rgba(0, 0, 0, 0.8); 
+  font-size: 1.05rem; 
+  text-align: center; 
 
-.subtitle {
-  color: #000000;
-  font-size: 0.95rem;
-  margin-bottom: 2rem;
 }
 
 .login-form {
   display: flex;
   flex-direction: column;
-  gap: 1.4rem;
+  align-items: center;
+  gap: 1.3rem;
+  width: 100%;
 }
 
 .form-group {
-  text-align: left;
-}
-
-label {
-  display: block;
-  margin-bottom: 0.5rem;
-  font-size: 0.95rem;
-  font-weight: 500;
-  color: #000000;
+  width: 100%;
+  max-width: 520px;
+  display: flex;
+  flex-direction: column;
+  gap: .4rem;
 }
 
 input {
   width: 100%;
-  padding: 0.95rem 1.2rem;
-  border: 1px solid #e2e8f0;
-  border-radius: 12px;
-  font-size: 1rem;
-  background: #ffffff;
-  transition: border-color 0.25s ease, box-shadow 0.25s ease;
-}
-
-input:focus {
-  outline: none;
-  border-color: #fedd66;
-  box-shadow: 0 0 0 4px rgba(254, 221, 102, 0.15);
-}
-
-.btn-login {
-  margin-top: 1.2rem;
-  padding: 1rem;
-  background: #fedd66;
-  color: #000000;
-  font-weight: 600;
-  font-size: 1.05rem;
+  padding: 1.1rem 1rem;
+  border-radius: 9999px;
   border: none;
-  border-radius: 12px;
-  cursor: pointer;
-  transition: all 0.3s ease;
+  background: rgba(255,255,255,.6);
+  box-shadow: inset 0 2px 8px rgba(0,0,0,.08);
 }
 
-.btn-login:hover:not(:disabled) {
-  background: #fbbf24;
-  transform: translateY(-2px);
-  box-shadow: 0 10px 25px rgba(254, 221, 102, 0.4);
+.btn-login { width: 100%; 
+  max-width: 520px; 
+  padding: 1.15rem;
+  background: linear-gradient(90deg, #ff6ba1, #7c3aed, #5dccff); 
+  background-size: 200% auto; 
+  color: white; 
+  font-size: 1.13rem; 
+  font-weight: 700; 
+  border: none; 
+  border-radius: 9999px; 
+  cursor: pointer; 
+  transition: all 0.45s cubic-bezier(0.34, 1.56, 0.64, 1); 
 }
 
-.btn-login:disabled {
-  opacity: 0.6;
-  cursor: not-allowed;
+.extra-links { 
+  margin-top: 0.8rem; 
+  text-align: center; 
+  font-size: 0.98rem; 
+  color: #373737; 
+} 
+
+.forgot-link, .signup-link { 
+  color: #000000; 
+  font-weight: 600; 
+  text-decoration: none; 
+} 
+
+.forgot-link:hover, .signup-link:hover { 
+  color: #7c3aed; 
+  text-decoration: underline; 
 }
 
-.extra-links {
-  margin-top: 1.6rem;
-  font-size: 0.95rem;
-  color: #64748b;
+/* CONTENEDOR 3D */
+.flip-card-container {
+  perspective: 1200px;
+  width: 100%;
+  max-width: 700px;
 }
 
-.forgot-link {
-  color: #d97706;
-  text-decoration: none;
-  display: block;
-  margin-bottom: 0.8rem;
+/* TARJETA 3D */
+.flip-card {
+  position: relative;
+  width: 100%;
+  min-height: 750px;
+  transform-style: preserve-3d;
+  transition: transform 0.9s cubic-bezier(.68,-0.55,.27,1.55);
 }
 
-.forgot-link:hover {
-  text-decoration: underline;
+/* ESTADO GIRADO */
+.flip-card.flipped {
+  transform: rotateY(180deg);
 }
 
-.signup-text {
-  margin-top: 0.8rem;
+/* CARAS */
+.flip-card-face {
+  position: absolute;
+  inset: 0;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+  display: flex;
 }
 
-.signup-link {
-  color: #d97706;
-  font-weight: 600;
-  text-decoration: none;
+/* FRENTE */
+.flip-card-front {
+  z-index: 2;
 }
 
-.signup-link:hover {
-  text-decoration: underline;
+/* ATRÁS */
+.flip-card-back {
+  transform: rotateY(180deg);
 }
 
-/* Responsividad mejorada */
-@media (max-width: 480px) {
-  .login-container {
-    padding: 0.8rem;
+.forgot-link:hover, .signup-link:hover {
+  background: #7c3aed;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+@media (max-width: 600px) {
+
+  .flip-card {
+    min-height: 720px;   /* registro cabe en móvil */
   }
-  
+
   .login-card {
-    padding: 2rem 1.4rem;
-    border-radius: 16px;
-  }
-  
-  h1 {
-    font-size: 1.7rem;
-  }
-  
-  .logo {
-    font-size: 3rem;
-  }
-  
-  .btn-login {
-    padding: 0.9rem;
-    font-size: 1rem;
+    padding: 2.2rem 2rem;
+    border-radius: 35px;
   }
 }
