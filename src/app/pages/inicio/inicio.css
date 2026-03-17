@@ -47,6 +47,7 @@
     );
   background-size: 500% 500%;
   animation: fruityBreeze 24s linear infinite;
+  pointer-events: none;
   /* más lenta y relajante */
 }
 
@@ -172,6 +173,7 @@
 .section {
   padding: 1rem 2rem;
   text-align: center;
+  
 }
 
 #inicio,
@@ -185,22 +187,16 @@
 
 /* Glassmorphism Title Pill Style */
 .section-title-glass {
+  backdrop-filter: blur(20px);
   display: inline-block;
   padding: 1rem 2rem;
   border-radius: 50px;
-  background: rgba(255, 255, 255, 0.45);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  border: 1px solid rgba(255, 255, 255, 0.7);
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05), inset 0 0 0 1px rgba(255, 255, 255, 0.4);
   margin-bottom: 2.5rem;
   text-align: center;
 }
 
 
-.section-title-glass p {
-  margin-bottom: 0 !important;
-}
+
 
 /* Animaciones Hero */
 @keyframes heroFadeUp {
@@ -239,6 +235,17 @@
   }
 }
 
+
+
+.glass {
+  background: rgba(255, 255, 255, 0.42);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 2px solid rgba(255, 255, 255, 0.8);
+  box-shadow: 0 20px 45px rgba(0, 0, 0, 0.1), inset 0 0 0 1px rgba(255, 255, 255, 0.6);
+}
+
+
 .hero {
   min-height: auto;
   margin: 8rem auto;
@@ -249,17 +256,11 @@
   gap: 4rem;
   padding: 0rem 3rem;
   border-radius: 30px;
-  background: rgba(255, 255, 255, 0.384);
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(12px);
-  border: 2px solid rgba(255, 255, 255, 0.8);
-  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.08), inset 0 0 0 1px rgba(255, 255, 255, 0.5);
   transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
 .hero:hover {
   transform: translateY(-5px);
-  box-shadow: 0 20px 45px rgba(0, 0, 0, 0.1), inset 0 0 0 1px rgba(255, 255, 255, 0.6);
 }
 
 .hero h1 {
@@ -341,33 +342,19 @@
 /* Perfiles */
 .profile-cards {
   display: flex;
-  gap: 3rem;
+  gap: 2rem;
   justify-content: center;
   flex-wrap: wrap;
 }
 
 .card {
   flex: 1;
-  max-width: 520px;
-  padding: 3rem;
+  max-width: 500px;
+  padding: 1rem;
   border-radius: 30px;
-  background: rgba(255, 255, 255, 0.4);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
-  border: 2px solid rgba(255, 255, 255, 0.8);
-  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.08), inset 0 0 0 1px rgba(255, 255, 255, 0.5);
   transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
-.profile-padres {
-  /* Inherits glassmorphism, adjust border or tint if desired */
-  border-color: rgba(var(--blue-soft-rgb, 200, 220, 255), 0.8);
-}
-
-.profile-ninos {
-  /* Inherits glassmorphism, adjust border or tint if desired */
-  border-color: rgba(var(--pink-soft-rgb, 255, 200, 220), 0.8);
-}
 
 .card:hover {
   transform: translateY(-10px);
@@ -455,11 +442,6 @@
   margin: 2.5rem auto;
   padding: 1rem 2rem;
   border-radius: 30px;
-  background: rgba(255, 255, 255, 0.45);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  border: 1px solid rgba(255, 255, 255, 0.7);
-  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.08), inset 0 0 0 1px rgba(255, 255, 255, 0.5);
   transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
@@ -483,16 +465,9 @@
 }
 
 .step {
-  width: 280px;
+  width: 220px;
   padding: 2.5rem 1.5rem;
   border-radius: 20px;
-
-  background: rgba(255, 255, 255, 0.45);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  border: 1px solid rgba(255, 255, 255, 0.7);
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05), inset 0 0 0 1px rgba(255, 255, 255, 0.4);
-
   transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
@@ -585,16 +560,9 @@
   position: absolute;
   width: 70%;
   height: 70%;
-  -webkit-backface-visibility: hidden;
   backface-visibility: hidden;
   padding: 2rem 2rem;
   border-radius: 20px;
-  background: rgba(255, 255, 255, 0.45);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  border: 1px solid rgba(255, 255, 255, 0.7);
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05), inset 0 0 0 1px rgba(255, 255, 255, 0.4);
-
   display: flex;
   align-items: center;
   justify-content: center;
@@ -607,12 +575,10 @@
 
 .feature-card-back {
   transform: rotateY(180deg);
-  /* Optionally you can give the back a slightly different tint, but keeping glassmorphism is fine */
 }
 
 .feature-card-front img {
   width: 80px;
-  /* Slightly larger image for focus */
 }
 
 .feature-card-back h3 {
@@ -675,7 +641,7 @@
   color: #000;
 }
 
-/* Contacto */
+
 .contact-container {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -683,13 +649,7 @@
   max-width: 1100px;
   margin: 2rem auto;
   padding: 3rem 4rem;
-
   border-radius: 30px;
-  background: rgba(255, 255, 255, 0.45);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  border: 1px solid rgba(255, 255, 255, 0.7);
-  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.08), inset 0 0 0 1px rgba(255, 255, 255, 0.5);
   transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
@@ -709,10 +669,27 @@
 .contact-form input,
 .contact-form select,
 .contact-form textarea {
+  width: 100%;
+  box-sizing: border-box;
   padding: 1rem;
   border: 1px solid #ddd;
   border-radius: 10px;
   font-size: 1rem;
+}
+
+.contact-form input,
+.contact-form select {
+  height: 50px;
+}
+
+.contact-form textarea {
+  resize: none;
+}
+
+.contact-form select {
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
 }
 
 .contact-form button {
@@ -735,7 +712,6 @@
   width: 32px;
 }
 
-/* Responsive */
 @media (max-width: 1024px) {
 
   .hero,
@@ -743,10 +719,6 @@
   .contact-container {
     grid-template-columns: 1fr;
     text-align: center;
-  }
-
-  .hero {
-    padding: 0rem 2rem;
   }
 
   .hero-image img {
@@ -774,5 +746,75 @@
 
   .carousel-card img {
     width: 280px;
+  }
+}
+
+@media (max-width: 1024px) {
+
+  .contact-container {
+    grid-template-columns: 1fr;
+    padding: 2rem;
+    gap: 3rem;
+    text-align: center;
+  }
+
+  .contact-info {
+    align-items: center;
+  }
+
+  .info-item {
+    justify-content: center;
+  }
+}
+
+@media (max-width: 768px) {
+
+  .contact-container {
+    padding: 1.5rem;
+    border-radius: 20px;
+  }
+
+  .contact-form,
+  .contact-info {
+    width: 100%;
+  }
+
+  .contact-form input,
+  .contact-form select,
+  .contact-form textarea {
+    width: 100%;
+    font-size: 0.95rem;
+  }
+
+  .contact-form button {
+    width: 100%;
+  }
+
+  .info-item {
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .info-item img {
+    width: 28px;
+  }
+}
+
+@media (max-width: 480px) {
+
+  .contact-container {
+    padding: 1rem;
+  }
+
+  h1 {
+    font-size: 2rem !important;
+  }
+
+  h2 {
+    font-size: 1.5rem !important;
+  }
+
+  .contact-form textarea {
+    rows: 4;
   }
 }

@@ -15,31 +15,16 @@ scrollTo(id: string) {
   const el = document.getElementById(id);
   if (!el) return;
 
-  const yOffset = -110; // altura del header
-  const y = el.getBoundingClientRect().top + window.pageYOffset + yOffset;
+  const header = document.querySelector('.topbar') as HTMLElement;
+  const headerHeight = header?.offsetHeight || 0;
 
-  window.scrollTo({ top: y, behavior: 'smooth' });
+  const y = el.scrollIntoView({ behavior: 'smooth' });
+
+  window.scrollTo({
+    behavior: 'smooth'
+  });
 }
 
-  private scroll(section: string) {
-  const element = document.getElementById(section);
-  console.log(`Buscando #${section} →`, element);
-
-  if (element) {
-    console.log('Haciendo scrollIntoView...');
-    
-    // Opción A: alineación al inicio (más común)
-    element.scrollIntoView({
-      behavior: 'smooth',
-      block: 'start'     // lleva la sección justo al tope de la ventana
-    });
-
-    // Opción B: si el header tapa, prueba con 'nearest' o ajusta manualmente
-    // element.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-  } else {
-    console.warn(`No encontrado #${section}`);
-  }
-}
 
 menuOpen = false;
 

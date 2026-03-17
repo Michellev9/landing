@@ -136,6 +136,13 @@
 }
 
 
+.glass {
+  background: rgba(255, 255, 255, 0.42);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(12px);
+  border-radius: 50px;
+  box-shadow: 0 20px 45px rgba(0, 0, 0, 0.1), inset 0 0 0 1px rgba(255, 255, 255, 0.6);
+}
 
 /* CONTENEDOR GENERAL */
 .login-container {
@@ -149,11 +156,6 @@
 .login-card {
   width: 100%;
   padding: 3rem 3rem;
-  border-radius: 50px;
-  background: rgba(255,255,255,.45);
-  backdrop-filter: blur(12px);
-  border: 3px solid rgba(255,255,255,.7);
-  box-shadow: 0 10px 30px rgba(0,0,0,.08);
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -163,7 +165,7 @@
   box-sizing: border-box;
 }
 
-.logo { font-size: clamp(3.2rem, 9vw, 4.5rem); /* un toque más pequeño para ahorrar altura */ 
+.logo { font-size: clamp(3.2rem, 9vw, 4.5rem);
   font-weight: 900; 
   background: linear-gradient(90deg, #ff6ba1, #c29eff, #5dccff, #fedd66); 
   -webkit-background-clip: text; 
@@ -256,7 +258,7 @@ input {
 .flip-card {
   position: relative;
   width: 100%;
-  min-height: 750px;
+  min-height: 710px;
   transform-style: preserve-3d;
   transition: transform 0.9s cubic-bezier(.68,-0.55,.27,1.55);
 }

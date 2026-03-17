@@ -15,6 +15,12 @@
       font-family: system-ui, sans-serif;
     }
 
+    @keyframes fruityBreeze {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+      }
+
     #loader {
       position: fixed;
       inset: 0;
@@ -31,7 +37,7 @@
     #loader.hide {
       opacity: 0;
       pointer-events: none;
-      transform: scale(1.40);
+      transform: scale(1.80);
     }
 
     .loader-content {
@@ -79,7 +85,8 @@
 
     app-root {
       opacity: 0;
-      transition: opacity 1s ease-out, transform 1s ease-out;
+      transform: translateY(20px);
+      transition: opacity 1s ease, transform 1s ease;
     }
 
     app-root.loaded {
@@ -97,11 +104,11 @@
     <div class="loader-content">
 
       <div class="video-container">
-        <video id="loadingVideo" class="video-loader" autoplay muted playsinline src="loading.mp4">
+        <video id="loadingVideo" class="video-loader" autoplay muted playsinline>
+          <source src="loading.mp4" type="video/mp4">
         </video>
 
-        <svg class="progress-ring" viewBox="0 0 280 280">
-          <circle class="progress-ring-bg" cx="140" cy="140" r="130" />
+        <svg class="progress-ring">
           <circle class="progress-ring-circle" cx="140" cy="140" r="130" id="progressCircle" />
         </svg>
       </div>
@@ -124,33 +131,44 @@
 
       function setProgress(percent) {
         const progress = Math.min(100, Math.max(0, percent));
-        const offset = circumference - (progress / 100) * circumference;
-        circle.style.strokeDashoffset = offset;
         percentTxt.textContent = Math.round(progress) + '%';
       }
 
-      // Progreso real del video
+      function syncWithVideo() {
+        if (!usingVideoProgress || !video.duration) return;
+        const percent =
+          (video.currentTime / video.duration) * 100;
+        setProgress(percent);
+        if (percent < 100) {
+          requestAnimationFrame(syncWithVideo);
+        }
+      }
+      
       let usingVideoProgress = false;
 
       video.addEventListener('loadedmetadata', () => {
         if (video.duration > 0 && video.duration < 30) {
           usingVideoProgress = true;
-          video.playbackRate = 2; // Reproducir el video 2.5 veces más rápido para reducir el tiempo de carga
+          video.playbackRate = 1.2;
+          requestAnimationFrame(syncWithVideo);
         }
       });
 
-      video.addEventListener('timeupdate', () => {
-        if (usingVideoProgress && video.duration) {
-          const percent = (video.currentTime / video.duration) * 100;
-          setProgress(percent);
-          if (percent >= 98) hideLoader();
-        }
+      video.addEventListener('ended', () => {
+        setProgress(100);
+        setTimeout(() => {
+          hideLoader();
+        }, 100);
       });
 
-      // Simulación como fallback
+      video.addEventListener('loadeddata', () => {
+        setProgress(0);
+      });
+
+
       let simulatedProgress = 0;
       const simInterval = setInterval(() => {
-        if (usingVideoProgress) return;
+        if (usingVideoProgress && video.readyState >= 3) return;
 
         const remaining = 100 - simulatedProgress;
         if (remaining <= 0) {
@@ -164,12 +182,11 @@
         const step = Math.max(3, remaining * 0.15) * (0.8 + Math.random() * 0.4);
         simulatedProgress = Math.min(100, simulatedProgress + step);
         setProgress(simulatedProgress);
-      }, 170); // Reducido de 180ms a 50ms para que sea más rápido
+      }, 100); // Reducido de 180ms a 50ms para que sea más rápido
 
       function hideLoader() {
         setProgress(100);
         if (typeof msgInterval !== 'undefined') clearInterval(msgInterval);
-        if (typeof msgEl !== 'undefined') msgEl.textContent = "¡Listo!";
         loader.classList.add('hide');
 
         // Agregar clase para mostrar el contenido de la app suavemente
@@ -181,17 +198,6 @@
         setTimeout(() => loader.remove(), 800); // Dar tiempo para la transición
       }
 
-      // Seguridad (asegurar que se oculta tras un tiempo máximo razonable, ej. 3s)
-      setTimeout(() => {
-        if (simulatedProgress < 100) {
-          setProgress(100);
-          hideLoader();
-        }
-      }, 3000); // 3 segundos máximo de espera simulada
-
-      video.addEventListener('error', () => {
-        usingVideoProgress = false;
-      });
     });
   </script>
 

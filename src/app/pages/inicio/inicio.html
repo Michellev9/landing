@@ -1,5 +1,4 @@
 <div class="stars-background">
-  <!-- Fondo Base con efecto Parallax Sutil -->
   <div class="stars-layer base"
     [ngStyle]="{'transform': 'translate(' + mouseX * 0.01 + 'px, ' + mouseY * 0.01 + 'px)'}"></div>
   <div class="stars-layer twinkling"
@@ -7,7 +6,6 @@
   <div class="stars-layer moving"
     [ngStyle]="{'transform': 'translate(' + mouseX * 0.035 + 'px, ' + mouseY * 0.035 + 'px)'}"></div>
 
-  <!-- Frutas y Estrellas Interactivas Flotantes -->
   <div *ngFor="let item of floatingItems" class="floating-item-wrapper" [ngStyle]="{
          'top': item.currentTop + '%', 
          'left': item.left + '%', 
@@ -21,7 +19,7 @@
 
 
 <!-- HERO / INICIO -->
-<section id="inicio" class="hero">
+<section id="inicio" class="hero glass">
   <div class="hero-content">
     <h1>StarNutri: Aprendizaje Nutricional Infantil</h1>
     <p>La app que ayuda a los padres a monitorear la nutrición mientras los niños aprenden hábitos saludables jugando.
@@ -45,13 +43,13 @@
 </section>
 
 <!-- PERFILES -->
-<section id="perfiles" class="section profiles reveal">
-  <div class="section-title-glass">
+<section id="perfiles" class="section profiles">
+  <div class="section-title-glass glass reveal">
     <h1>Dos Perfiles, Una Solución Completa</h1>
   </div>
 
   <div class="profile-cards">
-    <article class="card profile-padres reveal">
+    <article class="card glass profile-padres reveal">
       <h3>
         <img src="https://cdn-icons-png.flaticon.com/512/1077/1077114.png" class="icon" alt="">
         Perfil de Padres
@@ -77,7 +75,7 @@
       </ul>
     </article>
 
-    <article class="card profile-ninos reveal">
+    <article class="card glass profile-ninos reveal">
       <h3>
         <img src="https://cdn-icons-png.flaticon.com/512/1077/1077114.png" class="icon" alt="">
         Perfil de Niños
@@ -107,7 +105,7 @@
 
 <!-- NOSOTROS -->
 <section id="nosotros" class="section about">
-  <div class="about-grid reveal">
+  <div class="about-grid glass reveal">
     <div class="about-text reveal">
       <h1>¿Qué es StarNutri?</h1>
       <p>StarNutri es una aplicación móvil enfocada en el bienestar y la nutrición infantil, diseñada para ayudar a las
@@ -119,7 +117,7 @@
     </div>
   </div>
 
-  <div class="about-grid reverse">
+  <div class="about-grid glass reverse">
     <div class="about-image reveal">
       <img src="objetivo.png" alt="Objetivo StarNutri">
     </div>
@@ -133,32 +131,32 @@
 </section>
 
 <!-- CÓMO FUNCIONA -->
-<section id="como-funciona" class="section how-it-works reveal">
-  <div class="section-title-glass">
+<section id="como-funciona" class="section how-it-works">
+  <div class="section-title-glass glass reveal">
     <h1>¿Cómo funciona StarNutri?</h1>
   </div>
 
-  <div class="steps reveal">
+  <div class="steps">
 
-    <div class="step reveal">
+    <div class="step glass reveal">
       <span>1</span>
       <h4>Inicia sesión con Google</h4>
       <p>Accede de forma rápida y segura utilizando tu cuenta de Google.</p>
     </div>
 
-    <div class="step reveal">
+    <div class="step glass reveal">
       <span>2</span>
       <h4>Selecciona el perfil</h4>
       <p>Elige el perfil que deseas utilizar dentro de la aplicación móvil.</p>
     </div>
 
-    <div class="step reveal">
+    <div class="step glass reveal">
       <span>3</span>
       <h4>Registra alimentos y actividades</h4>
       <p>Guarda fácilmente lo que consume tu hijo y las actividades que realiza cada día.</p>
     </div>
 
-    <div class="step reveal">
+    <div class="step glass reveal">
       <span>4</span>
       <h4>Recibe recomendaciones personalizadas</h4>
       <p>Obtén sugerencias nutricionales inteligentes para mejorar sus hábitos.</p>
@@ -182,72 +180,71 @@
 
 <!-- CARACTERÍSTICAS -->
 <section id="caracteristicas" class="section features">
-  <div class="features-hero section-title-glass">
+
+  <div class="features-hero section-title-glass glass reveal">
     <h1>Conoce los beneficios de usar StarNutri</h1>
   </div>
 
-  <div class="features-grid reveal">
-    <div class="feature-card reveal">
+  <div class="features-grid">
+
+    <div class="feature-card">
       <div class="feature-card-inner">
-        <div class="feature-card-front">
-          <img src="https://cdn-icons-png.flaticon.com/512/2966/2966486.png" alt="">
+
+        <div class="feature-card-front glass">
+            <img src="https://cdn-icons-png.flaticon.com/512/2966/2966486.png" alt="">
         </div>
-        <div class="feature-card-back">
-          <h3>Mejora la Salud</h3>
+
+        <div class="feature-card-back glass">
+            <h3>Mejora la Salud</h3>
+        </div>
+
+      </div>
+    </div>
+
+    <div class="feature-card">
+      <div class="feature-card-inner">
+        <div class="feature-card-front glass">
+            <img src="https://cdn-icons-png.flaticon.com/512/1048/1048953.png" alt="">
+        </div>
+        <div class="feature-card-back glass">
+            <h3>Educación Divertida</h3>
         </div>
       </div>
     </div>
-    <div class="feature-card reveal">
+
+    <div class="feature-card">
       <div class="feature-card-inner">
-        <div class="feature-card-front">
-          <img src="https://cdn-icons-png.flaticon.com/512/1048/1048953.png" alt="">
+        <div class="feature-card-front glass">
+            <img src="https://cdn-icons-png.flaticon.com/512/681/681494.png" alt="">
         </div>
-        <div class="feature-card-back">
-          <h3>Educación Divertida</h3>
+        <div class="feature-card-back glass">
+            <h3>Conexión Familiar</h3>
         </div>
       </div>
     </div>
-    <div class="feature-card reveal">
+
+    <div class="feature-card">
       <div class="feature-card-inner">
-        <div class="feature-card-front">
-          <img src="https://cdn-icons-png.flaticon.com/512/681/681494.png" alt="">
+        <div class="feature-card-front glass">
+            <img src="https://cdn-icons-png.flaticon.com/512/992/992700.png" alt="">
         </div>
-        <div class="feature-card-back">
-          <h3>Conexión Familiar</h3>
+        <div class="feature-card-back glass">
+            <h3>Ahorra Tiempo</h3>
         </div>
       </div>
     </div>
-    <div class="feature-card reveal">
-      <div class="feature-card-inner">
-        <div class="feature-card-front">
-          <img src="https://cdn-icons-png.flaticon.com/512/992/992700.png" alt="">
-        </div>
-        <div class="feature-card-back">
-          <h3>Ahorra Tiempo</h3>
-        </div>
-      </div>
-    </div>
-    <div class="feature-card reveal">
-      <div class="feature-card-inner">
-        <div class="feature-card-front">
-          <img src="https://cdn-icons-png.flaticon.com/512/1827/1827392.png" alt="">
-        </div>
-        <div class="feature-card-back">
-          <h3>Siempre Contigo</h3>
-        </div>
-      </div>
-    </div>
+
   </div>
 </section>
 
 <!-- PLANES -->
 <section id="planes" class="section plans">
-  <div class="section-title-glass reveal">
+  <div class="section-title-glass glass reveal">
     <h1>Elige el plan que mejor se adapte a tu familia</h1>
   </div>
 
   <div class="plan-cards">
-    <div class="card plan-gratuito reveal">
+    <div class="card plan-gratuito glass reveal">
       <img src="https://cdn-icons-png.flaticon.com/512/1828/1828884.png" class="plan-icon" alt="">
       <h3>Plan Gratuito</h3>
       <h4 class="price">$0 MXN / mes</h4>
@@ -263,7 +260,7 @@
       <button class="btn-outline">Plan Actual</button>
     </div>
 
-    <div class="card plan-premium reveal">
+    <div class="card plan-premium glass reveal">
       <img src="https://cdn-icons-png.flaticon.com/512/2583/2583344.png" class="plan-icon" alt="">
       <h3>Plan Premium</h3>
       <h4 class="price">$69 MXN / mes</h4>
@@ -278,7 +275,7 @@
       <button class="btn-primary">Comenzar Ahora</button>
     </div>
 
-    <div class="card plan-familiar reveal">
+    <div class="card plan-familiar glass reveal">
       <img src="https://cdn-icons-png.flaticon.com/512/1077/1077012.png" class="plan-icon" alt="">
       <h3>Plan Familiar</h3>
       <h4 class="price">$99 MXN / mes</h4>
@@ -298,7 +295,7 @@
 <!-- CONTACTO -->
 <section id="contacto" class="section contact">
 
-  <div class="contact-container">
+  <div class="contact-container glass">
     <div class="contact-info reveal">
       <h1>Contáctanos</h1>
       <h2>¡Estamos para apoyarte!</h2>

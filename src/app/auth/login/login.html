@@ -1,13 +1,10 @@
 <div class="stars-background">
-  <!-- Capas de estrellas con movimiento parallax sutil -->
   <div class="stars-layer base"
        [ngStyle]="{'transform': 'translate(' + mouseX * 0.01 + 'px, ' + mouseY * 0.01 + 'px)'}"></div>
   <div class="stars-layer twinkling"
        [ngStyle]="{'transform': 'translate(' + mouseX * 0.02 + 'px, ' + mouseY * 0.02 + 'px)'}"></div>
   <div class="stars-layer moving"
        [ngStyle]="{'transform': 'translate(' + mouseX * 0.035 + 'px, ' + mouseY * 0.035 + 'px)'}"></div>
-
-  <!-- Elementos flotantes (frutas/estrellas) -->
   <div *ngFor="let item of floatingItems" class="floating-item-wrapper"
        [ngStyle]="{
          'top': item.currentTop + '%', 
@@ -26,9 +23,8 @@
   <div class="flip-card-container">
     <div class="flip-card" [class.flipped]="isRegisterMode">
 
-      <!-- Cara frontal: LOGIN -->
-      <div class="flip-card-face flip-card-front">
-        <div class="login-card glass">
+      <div class="flip-card-face flip-card-front glass">
+        <div class="login-card">
           <div class="logo-wrapper">
             <div class="logo">StarNutri</div>
           </div>
@@ -80,8 +76,8 @@
       </div>
 
       <!-- Cara trasera: REGISTRO -->
-      <div class="flip-card-face flip-card-back">
-        <div class="login-card glass">
+      <div class="flip-card-face flip-card-back glass">
+        <div class="login-card">
           <div class="logo-wrapper">
             <div class="logo">StarNutri</div>
           </div>
