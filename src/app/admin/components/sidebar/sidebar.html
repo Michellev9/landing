@@ -1,6 +1,16 @@
-<aside class="sidebar">
+
+<button class="menu-toggle" (click)="toggleSidebar()">
+  ☰
+</button>
+
+<div class="overlay" 
+     [class.active]="isSidebarOpen"
+     (click)="toggleSidebar()">
+</div>
+
+<aside class="sidebar" [class.active]="isSidebarOpen">
   <div class="logo-wrapper">
-    <img src="logo.png" class="logo"/>
+    <img src="logo_blanco.png" class="logo"/>
   </div>
 
   <nav class="main-nav">
@@ -22,4 +32,16 @@
     </div>
 
   </nav>
+  <div class="user-profile">
+  <div class="avatar-placeholder"></div>
+
+  <div class="user-info">
+    <p class="user-name">Administrador</p>
+    <p class="user-role">Admin</p>
+  </div>
+
+  <button class="logout-btn" (click)="logout()">
+    ⏻
+  </button>
+</div>
 </aside>

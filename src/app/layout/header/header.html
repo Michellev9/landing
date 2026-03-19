@@ -1,16 +1,16 @@
 <header class="topbar glass">
   <div class="topbar-left" (click)="scrollTo('inicio')">
-    <img src="logo.png" alt="Logo StarNutri" class="logo" />
-    <span class="brand">StarNutri</span>
+    <img src="logo-estrella.png" alt="Logo StarNutri" class="logo-icon" />
+    <img src="starnutri.png" alt="StarNutri" class="logo-text">
   </div>
 
   <nav class="menu">
-    <a (click)="scrollTo('inicio')">Inicio</a>
-    <a (click)="scrollTo('perfiles')">Perfiles</a>
-    <a (click)="scrollTo('nosotros')">Sobre StarNutri</a>
-    <a (click)="scrollTo('como-funciona')">¿Cómo funciona?</a>
-    <a (click)="scrollTo('planes')">Planes</a>
-    <a (click)="scrollTo('contacto')">Contacto</a>
+    <a class="menu-link" (click)="scrollTo('inicio')">Inicio</a>
+    <a class="menu-link" (click)="scrollTo('perfiles')">Perfiles</a>
+    <a class="menu-link" (click)="scrollTo('nosotros')">Sobre StarNutri</a>
+    <a class="menu-link" (click)="scrollTo('como-funciona')">¿Cómo funciona?</a>
+    <a class="menu-link" (click)="scrollTo('planes')">Planes</a>
+    <a class="menu-link" (click)="scrollTo('contacto')">Contacto</a>
 
     <a routerLink="/login" class="login-btn" (click)="closeMenu()">Iniciar sesión</a>
   </nav>

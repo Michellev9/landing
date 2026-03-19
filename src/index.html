@@ -11,7 +11,6 @@
   <style>
     body,
     html {
-      overflow-x: hidden;
       font-family: system-ui, sans-serif;
     }
 
@@ -24,7 +23,7 @@
     #loader {
       position: fixed;
       inset: 0;
-      background: linear-gradient(90deg, #e0f2e9, #ffe4c4, #fffde7, #d4f4dd, #e0f2e9);  
+      background: linear-gradient(90deg, #ccfae3, #ffd9ab, #fef9c6, #bfeacb, #e0f2e9);  
       background-size: 500% 500%;
       animation: fruityBreeze 24s linear infinite; 
       display: flex;
@@ -102,19 +101,15 @@
 
   <div id="loader">
     <div class="loader-content">
-
       <div class="video-container">
         <video id="loadingVideo" class="video-loader" autoplay muted playsinline>
           <source src="loading.mp4" type="video/mp4">
         </video>
-
         <svg class="progress-ring">
           <circle class="progress-ring-circle" cx="140" cy="140" r="130" id="progressCircle" />
         </svg>
       </div>
-
       <span class="percentage-text" id="percentText">0%</span>
-
     </div>
   </div>
 

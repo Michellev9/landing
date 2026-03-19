@@ -1,6 +1,6 @@
 
 .topbar {
-  position: absolute;
+  position: fixed;
   top: 30px;
   left: 50%;
   transform: translateX(-50%);
@@ -14,7 +14,7 @@
   padding: .7rem 1.4rem;
   border-radius: 50px;
   transition: all .3s ease;
-
+  height: 50px;
 }
 
 /* Glass estilo igual a tu diseño */
@@ -37,17 +37,16 @@
   cursor: pointer;
 }
 
-.logo {
-  width: 80px;
+.logo-icon {
+  height: 55px;
+  width: auto;
 }
 
-.brand {
-  font-size: 1.6rem;
-  font-weight: 700;
-  background: linear-gradient(45deg,#ff6ba1,#c29eff,#5dccff);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
+.logo-text {
+  height: 25px;
+  width: auto;
 }
+
 
 /* MENU */
 .menu {
@@ -65,29 +64,38 @@
 }
 
 /* Hover underline animado */
-.menu a::after {
+.menu-link {
+  cursor: pointer;
+  font-weight: 600;
+  position: relative;
+  transition: .3s;
+}
+
+.menu-link::after {
   content: "";
   position: absolute;
   bottom: -4px;
   left: 0;
   width: 0%;
   height: 2px;
-  background: linear-gradient(90deg,#ff6ba1,#7c3aed,#5dccff);
+  background: black;
   transition: .3s;
-  text-decoration: underline;
 }
 
-.menu a:hover::after {
+.menu-link:hover::after {
   width: 100%;
 }
+
+
 
 /* BOTÓN LOGIN */
 .login-btn {
   padding: .5rem 1rem;
   border-radius: 30px;
-  background: linear-gradient(90deg,#ff6ba1,#7c3aed);
+  background: black;
   color: white;
   transition: .3s;
+  text-decoration: none;
 }
 
 .login-btn:hover {

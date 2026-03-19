@@ -1,3 +1,4 @@
+
 <div class="stars-background">
   <div class="stars-layer base"
        [ngStyle]="{'transform': 'translate(' + mouseX * 0.01 + 'px, ' + mouseY * 0.01 + 'px)'}"></div>
@@ -19,49 +20,97 @@
   </div>
 </div>
 
+<!-- MODAL OTP -->
+<div class="otp-modal-backdrop" *ngIf="showOtpInput">
+  <div class="otp-modal glass">
+
+
+    <h2>Verificación de seguridad</h2>
+    <p class="otp-subtitle">
+      Ingresa el código enviado a tu celular
+    </p>
+
+    <!-- INPUT ESTILO PIN -->
+    <div class="otp-input-group">
+      <input
+        type="text"
+        maxlength="6"
+        [(ngModel)]="otpCode"
+        placeholder="______"
+        class="otp-input"
+      />
+    </div>
+
+    <button class="btn-verify" (click)="verifyOtp()">
+      Verificar código
+    </button>
+
+<div *ngIf="otpError" class="otp-error">{{ otpError }}</div>
+<div *ngIf="otpSuccess" class="otp-success">{{ otpSuccess }}</div>
+
+  </div>
+</div>
+
+
+
 <div class="login-container">
   <div class="flip-card-container">
     <div class="flip-card" [class.flipped]="isRegisterMode">
 
       <div class="flip-card-face flip-card-front glass">
         <div class="login-card">
+          
           <div class="logo-wrapper">
-            <div class="logo">StarNutri</div>
+            <div><img src="logo.png"></div>
           </div>
-
           <h1>¡Bienvenido de nuevo!</h1>
           <p class="subtitle">Ingresa tus datos para continuar</p>
 
           <form class="login-form" (ngSubmit)="login()">
             <div class="form-group">
-              <label for="email">Correo electrónico</label>
+              <label>Correo electrónico</label>
               <input 
-                type="email" 
-                id="email" 
+                type="email"
                 [(ngModel)]="email"
                 name="email"
-                placeholder="ejemplo@starnutri.com"
+                #emailRef="ngModel"
                 required
-                autocomplete="email"
+                email
+                placeholder="ejemplo@correo.com"
+                [ngClass]="getInputClass(emailRef)"
               />
+
+              <div class="error-text" *ngIf="emailRef.touched && emailRef.invalid">
+                Correo inválido
+              </div>
             </div>
 
             <div class="form-group">
-              <label for="password">Contraseña</label>
+              <label>Contraseña</label>
               <input 
-                type="password" 
-                id="password" 
+                type="password"
                 [(ngModel)]="password"
                 name="password"
-                placeholder="••••••••"
+                #passwordRef="ngModel"
                 required
-                autocomplete="current-password"
+                minlength="6"
+                placeholder="Mínimo 6 caracteres"
+                [ngClass]="getInputClass(passwordRef)"
               />
+
+              <div class="error-text" *ngIf="passwordRef.touched && passwordRef.invalid">
+                Mínimo 6 caracteres
+              </div>
             </div>
 
             <button type="submit" class="btn-login" [disabled]="isLoading">
               <span *ngIf="!isLoading">Iniciar Sesión</span>
               <span *ngIf="isLoading">Iniciando Sesión...</span>
+            </button>
+
+            <button type="button" class="btn-google" (click)="loginWithGoogle()">
+              <span class="google-icon"></span>
+              <span>Iniciar con Google</span>
             </button>
           </form>
 
@@ -79,60 +128,65 @@
       <div class="flip-card-face flip-card-back glass">
         <div class="login-card">
           <div class="logo-wrapper">
-            <div class="logo">StarNutri</div>
+            <div><img src="logo.png" alt=""></div>
           </div>
 
           <h1>¡Únete ahora!</h1>
           <p class="subtitle">Crea tu cuenta en segundos</p>
 
           <form class="login-form" (ngSubmit)="register()">
-            <div class="form-group">
-              <label for="name">Nombre completo</label>
-              <input 
-                type="text" 
-                id="name" 
-                [(ngModel)]="name"
-                name="name"
-                placeholder="Tu nombre"
-                required
-              />
-            </div>
 
             <div class="form-group">
-              <label for="reg-email">Correo electrónico</label>
+              <label>Correo electrónico</label>
               <input 
-                type="email" 
-                id="reg-email" 
+                type="email"
                 [(ngModel)]="regEmail"
                 name="regEmail"
-                placeholder="ejemplo@starnutri.com"
+                #regEmailRef="ngModel"
                 required
-                autocomplete="email"
+                email
+                placeholder="ejemplo@correo.com"
+                [ngClass]="getInputClass(regEmailRef)"
               />
+
+              <div class="error-text" *ngIf="regEmailRef.touched && regEmailRef.invalid">
+                Correo inválido
+              </div>
             </div>
 
             <div class="form-group">
-              <label for="reg-password">Contraseña</label>
+              <label>Contraseña</label>
               <input 
-                type="password" 
-                id="reg-password" 
+                type="password"
                 [(ngModel)]="regPassword"
                 name="regPassword"
-                placeholder="Mínimo 8 caracteres"
+                #regPasswordRef="ngModel"
                 required
+                minlength="6"
+                placeholder="Crea una contraseña segura"
+                [ngClass]="getInputClass(regPasswordRef)"
               />
+
+              <div class="error-text" *ngIf="regPasswordRef.touched && regPasswordRef.invalid">
+                Mínimo 6 caracteres
+              </div>
             </div>
 
             <div class="form-group">
-              <label for="confirm-password">Confirmar contraseña</label>
+              <label>Confirmar contraseña</label>
               <input 
-                type="password" 
-                id="confirm-password" 
+                type="password"
                 [(ngModel)]="confirmPassword"
                 name="confirmPassword"
-                placeholder="Repite tu contraseña"
+                #confirmPasswordRef="ngModel"
                 required
+                placeholder="Confirma tu contraseña"
+                [ngClass]="getInputClass(confirmPasswordRef)"
               />
+
+              <div class="error-text" *ngIf="confirmPasswordRef.touched && regPassword !== confirmPassword">
+                Las contraseñas no coinciden
+              </div>
             </div>
 
             <button type="submit" class="btn-login" [disabled]="isLoading">
@@ -153,3 +207,4 @@
     </div>
   </div>
 </div>
+<div id="recaptcha-container"></div>

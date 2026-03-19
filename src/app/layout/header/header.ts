@@ -18,11 +18,15 @@ scrollTo(id: string) {
   const header = document.querySelector('.topbar') as HTMLElement;
   const headerHeight = header?.offsetHeight || 0;
 
-  const y = el.scrollIntoView({ behavior: 'smooth' });
+  const elementPosition = el.getBoundingClientRect().top + window.scrollY;
+  const offsetPosition = elementPosition - headerHeight - 20;
 
   window.scrollTo({
+    top: offsetPosition,
     behavior: 'smooth'
   });
+
+  this.closeMenu();
 }
 
 

@@ -4,7 +4,6 @@
 .dashboard-content {
   margin-left: 260px;
   padding: 24px 32px;
-  min-height: 100vh;
   background: linear-gradient(135deg,#eef2ff,#f8fafc,#ecfeff);
 }
 

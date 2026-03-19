@@ -8,13 +8,19 @@ import { Component } from '@angular/core';
 export class Footer {
 
   scrollTo(id: string) {
-    const el = document.getElementById(id);
-    if (!el) return;
+  const el = document.getElementById(id);
+  if (!el) return;
 
-    const yOffset = -110;
-    const y = el.getBoundingClientRect().top + window.pageYOffset + yOffset;
+  const header = document.querySelector('.topbar') as HTMLElement;
+  const headerHeight = header?.offsetHeight || 0;
 
-    window.scrollTo({ top: y, behavior: 'smooth' });
-  }
+  const elementPosition = el.getBoundingClientRect().top + window.scrollY;
+  const offsetPosition = elementPosition - headerHeight - 20;
+
+  window.scrollTo({
+    top: offsetPosition,
+    behavior: 'smooth'
+  });
+}
 
 }

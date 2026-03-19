@@ -18,52 +18,109 @@ export class Inicio implements OnInit, OnDestroy, AfterViewInit {
 
   ngAfterViewInit(): void {
     this.initAnimations();     // 🔥 GSAP
-    this.initIntersection();   // 🔥 Reveal CSS
+    this.initIntersection();
+    this.initCounters();
   }
 
   /* ================= GSAP ================= */
   initAnimations() {
-    gsap.from('.hero-content h1', { y: 60, opacity: 0, duration: 1 });
-    gsap.from('.hero-content p', { y: 40, opacity: 0, duration: 1, delay: .2 });
-    gsap.from('.store-buttons', { y: 30, opacity: 0, duration: 1, delay: .4 });
-    gsap.from('.hero-image img', { x: 120, opacity: 0, duration: 1.2, delay: .3 });
 
-    gsap.utils.toArray('.reveal-left').forEach((el: any) => {
-      gsap.from(el, {
-        x: -80,
-        opacity: 0,
-        duration: 2.5,
-        scrollTrigger: {
-          trigger: el,
-          start: 'top 80%'
-        }
-      });
-    });
+  /* ================= HERO ================= */
+  gsap.from('.hero-content h1', { y: 60, opacity: 0, duration: 1 });
+  gsap.from('.hero-content p', { y: 40, opacity: 0, duration: 1, delay: .2 });
+  gsap.from('.store-buttons', { y: 30, opacity: 0, duration: 1, delay: .4 });
+  gsap.from('.hero-image img', { x: 120, opacity: 0, duration: 1.2, delay: .3 });
 
-    gsap.utils.toArray('.reveal-right').forEach((el: any) => {
-      gsap.from(el, {
-        x: 80,
-        opacity: 0,
+
+  /* ================= REVEALS (REPETIBLES) ================= */
+  gsap.utils.toArray('.reveal-left').forEach((el: any) => {
+    gsap.fromTo(el,
+      { x: -80, opacity: 0 },
+      {
+        x: 0,
+        opacity: 1,
         duration: 1,
+        ease: "power2.out",
         scrollTrigger: {
           trigger: el,
-          start: 'top 80%'
+          start: 'top 80%',
+          end: 'top 30%',
+          toggleActions: "play reverse play reverse" // 🔥 CLAVE
         }
-      });
+      }
+    );
+  });
+
+  gsap.utils.toArray('.reveal-right').forEach((el: any) => {
+    gsap.fromTo(el,
+      { x: 80, opacity: 0 },
+      {
+        x: 0,
+        opacity: 1,
+        duration: 1,
+        ease: "power2.out",
+        scrollTrigger: {
+          trigger: el,
+          start: 'top 80%',
+          end: 'top 30%',
+          toggleActions: "play reverse play reverse"
+        }
+      }
+    );
+  });
+
+  gsap.utils.toArray('.reveal-zoom').forEach((el: any) => {
+    gsap.fromTo(el,
+      { scale: 0.8, opacity: 0 },
+      {
+        scale: 1,
+        opacity: 1,
+        duration: 1,
+        ease: "power2.out",
+        scrollTrigger: {
+          trigger: el,
+          start: 'top 80%',
+          end: 'top 30%',
+          toggleActions: "play reverse play reverse"
+        }
+      }
+    );
+  });
+
+
+  /* ================= SECCIONES (SOLUCION AL TRABADO) ================= */
+  gsap.utils.toArray('.section').forEach((section: any) => {
+
+    // ENTRADA SUAVE
+    gsap.fromTo(section,
+      { opacity: 0, y: 80 },
+      {
+        opacity: 1,
+        y: 0,
+        ease: "power2.out",
+        scrollTrigger: {
+          trigger: section,
+          start: "top 85%",
+          end: "top 40%",
+          scrub: true
+        }
+      }
+    );
+
+    // 🔥 FADE OUT (lo que te faltaba)
+    gsap.to(section, {
+      opacity: 0.3,
+      scrollTrigger: {
+        trigger: section,
+        start: "bottom 70%",
+        end: "bottom 30%",
+        scrub: true
+      }
     });
 
-    gsap.utils.toArray('.reveal-zoom').forEach((el: any) => {
-      gsap.from(el, {
-        scale: .8,
-        opacity: 0,
-        duration: 1,
-        scrollTrigger: {
-          trigger: el,
-          start: 'top 80%'
-        }
-      });
-    });
-  }
+  });
+
+}
 
   screens = [
     { img: 'screen1.png', text: 'Inicio de Sesión' },
@@ -128,13 +185,23 @@ export class Inicio implements OnInit, OnDestroy, AfterViewInit {
     }
     ScrollTrigger.getAll().forEach(t => t.kill());
   }
+  lastScrollY = 0;
+  scrollDirection: 'up' | 'down' = 'down';
 
   @HostListener('window:scroll')
   onScroll() {
-    if (typeof window !== 'undefined') {
-      this.targetScrollY = window.scrollY;
+  if (typeof window !== 'undefined') {
+    this.targetScrollY = window.scrollY;
+
+    if (this.targetScrollY > this.lastScrollY) {
+      this.scrollDirection = 'down';
+    } else {
+      this.scrollDirection = 'up';
     }
+
+    this.lastScrollY = this.targetScrollY;
   }
+}
 
   @HostListener('document:mousemove', ['$event'])
   onMouseMove(e: MouseEvent) {
@@ -220,14 +287,64 @@ export class Inicio implements OnInit, OnDestroy, AfterViewInit {
 
   const observer = new IntersectionObserver((entries) => {
     entries.forEach(entry => {
+
       if (entry.isIntersecting) {
-        entry.target.classList.add('show');
+
+        entry.target.classList.remove('from-up', 'from-down');
+
+        if (this.scrollDirection === 'down') {
+          entry.target.classList.add('show', 'from-down');
+        } else {
+          entry.target.classList.add('show', 'from-up');
+        }
+
+      } else {
+        entry.target.classList.remove('show');
       }
+
     });
   }, {
-    threshold: 0.15
+    threshold: 0.2
   });
 
   reveals.forEach(el => observer.observe(el));
 }
+
+initCounters() {
+  const counters = document.querySelectorAll('.counter');
+
+  const animate = (counter: any) => {
+    const target = +counter.getAttribute('data-target');
+    let current = 0;
+
+    const increment = target / 40;
+
+    const update = () => {
+      current += increment;
+
+      if (current < target) {
+        counter.innerText = Math.ceil(current);
+        requestAnimationFrame(update);
+      } else {
+        counter.innerText = target;
+      }
+    };
+
+    update();
+  };
+
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      const counter = entry.target as HTMLElement;
+
+      if (entry.isIntersecting) {
+        counter.innerText = "0";
+        animate(counter);
+      }
+    });
+  }, { threshold: 0.6 });
+
+  counters.forEach(counter => observer.observe(counter));
+}
+
 }

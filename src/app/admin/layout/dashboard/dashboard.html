@@ -1,4 +1,3 @@
-<!-- Este es el contenedor que SOLUCIONA el problema -->
 <main class="dashboard-content">
 
   <h1 class="title">Dashboard StarNutri</h1>
@@ -33,47 +32,37 @@
     </div>
   </section>
 
-  <!-- GRID CENTRAL -->
+  <!-- GRID -->
   <div class="grid">
-    <!-- CHART -->
+
     <div class="chart glass">
       <h3>Uso de la app</h3>
 
       <div class="range-buttons">
-    <button 
-      [class.active]="activeRange === 'week'"
-      (click)="changeRange('week')">
-      Semana
-    </button>
-    <button 
-      [class.active]="activeRange === 'month'"
-      (click)="changeRange('month')">
-      Mes
-    </button>
-    <button 
-      [class.active]="activeRange === 'year'"
-      (click)="changeRange('year')">
-      Año
-    </button>
-  </div>
-  <div class="chart-container">
-    <canvas id="chart"></canvas>
-  </div>
+        <button [class.active]="activeRange === 'week'" (click)="changeRange('week')">Semana</button>
+        <button [class.active]="activeRange === 'month'" (click)="changeRange('month')">Mes</button>
+        <button [class.active]="activeRange === 'year'" (click)="changeRange('year')">Año</button>
+      </div>
+
+      <div class="chart-container">
+        <canvas id="chart"></canvas>
+      </div>
     </div>
 
-    <!-- PANEL LATERAL DERECHO -->
     <aside class="side">
-
       <div class="alerts glass">
         <h3>Alertas</h3>
-        <p class="alert warning">⚠️ 12 niños con bajo consumo de frutas</p>
-        <p class="alert warning">⚠️ 8 padres sin actividad semanal</p>
+        <p class="alert warning">⚠️ Bajo consumo de frutas</p>
+        <p class="alert warning">⚠️ Padres sin actividad</p>
       </div>
     </aside>
+
   </div>
 
+  <!-- TABLA -->
   <section class="table-section glass">
     <h3>Usuarios recientes</h3>
+
     <div class="table-wrapper">
       <table>
         <thead>
@@ -83,34 +72,38 @@
             <th>Estado</th>
           </tr>
         </thead>
+
         <tbody>
           <tr>
-            <td>Juan</td>
-            <td>
+            <td data-label="Nombre">Juan</td>
+            <td data-label="Progreso">
               <div class="progress">
                 <div class="progress-bar" style="width: 80%"></div>
               </div>
             </td>
-            <td class="status active">Activo</td>
+            <td data-label="Estado" class="status active">Activo</td>
           </tr>
+
           <tr>
-            <td>María</td>
-            <td>
+            <td data-label="Nombre">María</td>
+            <td data-label="Progreso">
               <div class="progress">
                 <div class="progress-bar" style="width: 65%"></div>
               </div>
             </td>
-            <td class="status active">Activo</td>
+            <td data-label="Estado" class="status active">Activo</td>
           </tr>
+
           <tr>
-            <td>Carlos</td>
-            <td>
+            <td data-label="Nombre">Carlos</td>
+            <td data-label="Progreso">
               <div class="progress">
                 <div class="progress-bar" style="width: 40%"></div>
               </div>
             </td>
-            <td class="status inactive">Inactivo</td>
+            <td data-label="Estado" class="status inactive">Inactivo</td>
           </tr>
+
         </tbody>
       </table>
     </div>

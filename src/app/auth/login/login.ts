@@ -2,6 +2,11 @@ import { Component, HostListener, OnDestroy, OnInit, NgZone, ChangeDetectorRef }
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
+import { Auth, signInWithEmailAndPassword, createUserWithEmailAndPassword, updateProfile } from '@angular/fire/auth';
+import { GoogleAuthProvider, signInWithPopup, fetchSignInMethodsForEmail } from '@angular/fire/auth';
+import { multiFactor } from 'firebase/auth';
+import { RecaptchaVerifier, PhoneAuthProvider,PhoneMultiFactorGenerator,MultiFactorResolver, getMultiFactorResolver, sendEmailVerification} from 'firebase/auth';
+import { MultiFactorError } from 'firebase/auth';
 
 @Component({
   selector: 'app-login',
@@ -13,13 +18,26 @@ import { Router } from '@angular/router';
 export class Login implements OnInit, OnDestroy {
   email: string = '';
   password: string = '';
-  name: string = '';
   regEmail: string = '';
   regPassword: string = '';
   confirmPassword: string = '';
 
   isLoading: boolean = false;
   isRegisterMode: boolean = false;
+
+  errorMessage: string = '';
+  successMessage: string = '';
+
+otpCode: string = '';
+showOtpInput: boolean = false;
+verificationId: string = '';
+resolver!: MultiFactorResolver;
+otpError: string = '';
+otpSuccess: string = '';
+recaptchaVerifier!: RecaptchaVerifier;
+showPhoneModal: boolean = false;
+phoneNumber: string = '';
+mfaVerificationId: string = '';
 
   mouseX = 0;
   mouseY = 0;
@@ -52,7 +70,7 @@ export class Login implements OnInit, OnDestroy {
     
   ];
 
-  constructor(private ngZone: NgZone, private cdr: ChangeDetectorRef, private router: Router) {}
+  constructor(private ngZone: NgZone, private cdr: ChangeDetectorRef, private router: Router, private auth: Auth) {}
 
 
   ngOnInit() {
@@ -66,6 +84,14 @@ export class Login implements OnInit, OnDestroy {
         this.animationLoop();
       });
     }
+
+    this.recaptchaVerifier = new RecaptchaVerifier(
+    this.auth,
+    'recaptcha-container',
+    {
+      size: 'invisible'
+    }
+  );
   }
 
   ngOnDestroy() {
@@ -78,27 +104,256 @@ export class Login implements OnInit, OnDestroy {
     this.isRegisterMode = !this.isRegisterMode;
   }
 
-  login() {
-    this.isLoading = true;
-    setTimeout(() => {
-      this.isLoading = false;
-      this.router.navigate(['/admin/dashboard']);
-    }, 1500);
+async login() {
+  this.errorMessage = '';
+  this.otpError = '';
+  this.isLoading = true;
+
+  try {
+    await signInWithEmailAndPassword(
+      this.auth,
+      this.email,
+      this.password
+    );
+
+    this.router.navigate(['/admin/dashboard']);
+
+  } catch (err: any) {
+
+    if (err.code === 'auth/multi-factor-auth-required') {
+
+      console.log('✅ MFA detectado (Email)');
+
+      this.resolver = getMultiFactorResolver(this.auth, err);
+
+      if (!this.resolver.hints || this.resolver.hints.length === 0) {
+        this.errorMessage = 'No hay factores MFA registrados';
+        return;
+      }
+
+      const phoneInfo = this.resolver.hints[0];
+      const phoneAuthProvider = new PhoneAuthProvider(this.auth);
+
+      try {
+
+        this.verificationId = await phoneAuthProvider.verifyPhoneNumber(
+          {
+            multiFactorHint: phoneInfo,
+            session: this.resolver.session
+          },
+          this.recaptchaVerifier
+        );
+
+        console.log('✅ SMS enviado');
+
+        this.showOtpInput = true; // ✅ SOLO ESTA
+
+      } catch (mfaError) {
+        console.error('❌ Error enviando SMS:', mfaError);
+        this.errorMessage = 'No se pudo enviar el código';
+      }
+
+    } else {
+      console.error(err);
+
+      if (err.code === 'auth/user-not-found') {
+        this.errorMessage = 'Usuario no registrado';
+      } else if (err.code === 'auth/wrong-password') {
+        this.errorMessage = 'Contraseña incorrecta';
+      } else {
+        this.errorMessage = 'Error al iniciar sesión';
+      }
+    }
+
+  } finally {
+    this.isLoading = false;
+  }
+}
+
+async verifyOtp() {
+  this.otpError = '';
+  this.otpSuccess = '';
+
+  if (!this.otpCode) {
+    this.otpError = 'Ingresa el código';
+    return;
   }
 
-  register() {
-    if (this.regPassword !== this.confirmPassword) {
-      alert('Las contraseñas no coinciden');
+  try {
+    const verificationId = this.mfaVerificationId || this.verificationId;
+
+    const cred = PhoneAuthProvider.credential(
+      verificationId,
+      this.otpCode
+    );
+
+    const multiFactorAssertion =
+      PhoneMultiFactorGenerator.assertion(cred);
+
+    // 🔥 ENROLL (cuando viene del registro)
+    if (this.mfaVerificationId) {
+      const user = this.auth.currentUser;
+      if (!user) return;
+
+      await multiFactor(user).enroll(
+        multiFactorAssertion,
+        'Teléfono'
+      );
+
+      // limpiar estados
+      this.mfaVerificationId = '';
+      this.showOtpInput = false;
+      this.otpCode = '';
+
+      this.otpSuccess = '✅ MFA activado correctamente';
+
       return;
     }
 
-    this.isLoading = true;
+    // 🔥 LOGIN
+    await this.resolver.resolveSignIn(multiFactorAssertion);
+
+    this.showOtpInput = false;
+    this.otpCode = '';
+
+    this.otpSuccess = '✅ Código verificado correctamente. Bienvenido!';
+
+    // redirigir después de mostrar el mensaje
     setTimeout(() => {
-      this.isLoading = false;
-      this.toggleMode(); // vuelve a log|in después de registrar
-      // Aquí iría tu lógica real de registro + auth
-    }, 1800);
+      this.otpSuccess = '';
+      this.router.navigate(['/admin/dashboard']);
+    }, 1500);
+
+  } catch (error) {
+    this.otpError = 'Código incorrecto o expirado';
   }
+}
+
+
+async loginWithGoogle() {
+  this.errorMessage = '';
+  this.isLoading = true;
+
+  try {
+    const provider = new GoogleAuthProvider();
+    await signInWithPopup(this.auth, provider);
+
+    this.router.navigate(['/admin/dashboard']);
+
+  } catch (err: any) {
+
+    if (err.code === 'auth/multi-factor-auth-required') {
+
+      console.log('✅ MFA detectado (Google)');
+
+      this.resolver = getMultiFactorResolver(this.auth, err);
+
+      if (!this.resolver.hints || this.resolver.hints.length === 0) {
+        this.errorMessage = 'No hay factores MFA registrados';
+        return;
+      }
+
+      const phoneInfo = this.resolver.hints[0];
+      const phoneAuthProvider = new PhoneAuthProvider(this.auth);
+
+      try {
+
+        this.verificationId = await phoneAuthProvider.verifyPhoneNumber(
+          {
+            multiFactorHint: phoneInfo,
+            session: this.resolver.session
+          },
+          this.recaptchaVerifier
+        );
+
+        console.log('✅ SMS enviado');
+
+        this.showOtpInput = true;
+
+      } catch (mfaError) {
+        console.error('❌ Error MFA:', mfaError);
+        this.errorMessage = 'No se pudo enviar el código';
+      }
+
+    } else if (err.code === 'auth/popup-closed-by-user') {
+      this.errorMessage = 'Cancelaste el inicio con Google';
+    } else {
+      console.error(err);
+      this.errorMessage = 'Error con Google';
+    }
+
+  } finally {
+    this.isLoading = false;
+  }
+}
+
+
+getInputClass(input: any) {
+  if (!input) return '';
+
+  if (input.invalid && (input.touched || input.dirty)) {
+    return 'input-error';
+  }
+
+  if (input.valid && (input.touched || input.dirty)) {
+    return 'input-success';
+  }
+
+  return '';
+}
+
+
+
+async register() {
+  this.errorMessage = '';
+  this.successMessage = '';
+
+  if (!this.regEmail || !this.regPassword || !this.confirmPassword) {
+    this.errorMessage = 'Completa los campos';
+    return;
+  }
+
+  if (this.regPassword !== this.confirmPassword) {
+    this.errorMessage = 'Las contraseñas no coinciden';
+    return;
+  }
+
+  this.isLoading = true;
+
+  try {
+
+    const userCredential = await createUserWithEmailAndPassword(
+      this.auth,
+      this.regEmail,
+      this.regPassword
+    );
+
+    await sendEmailVerification(userCredential.user);
+
+    this.successMessage = 'Cuenta creada. Verifica tu correo';
+
+    // 👉 Mostrar modal para activar MFA
+    setTimeout(() => {
+      this.showPhoneModal = true;
+    }, 1500);
+
+  } catch (error: any) {
+    this.errorMessage = 'Error al registrarse';
+  } finally {
+    this.isLoading = false;
+  }
+}
+
+
+showMessage(message: string, type: 'success' | 'error') {
+  this.errorMessage = 'Correo inválido';
+this.successMessage = ''; 
+
+setTimeout(() => {
+  this.errorMessage = '';
+  this.successMessage = '';
+}, 1000);
+}
 
   
 
