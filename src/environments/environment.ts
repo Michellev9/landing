@@ -1,6 +1,6 @@
 export const environment = {
   production: false,
-  firebase: {
+  firebaseConfig: {
     apiKey: "AIzaSyDeU2fFdyp-a4o4mtzcHutpmEghhRhwd_k",
     authDomain: "starnutri-f9b6f.firebaseapp.com",
     projectId: "starnutri-f9b6f",

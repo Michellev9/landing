@@ -1,0 +1,203 @@
+<div class="admin-container">
+  <div class="table-wrapper glass">
+    <div class="card-header">
+      <h2 class="title">Gestión de Usuarios</h2>
+      <p class="subtitle">
+        Administra los usuarios registrados en la plataforma.
+      </p>
+    </div>
+
+    <div class="modal" *ngIf="showCreateModal">
+      <div class="modal-content glass">
+        <h3>Nuevo Usuario</h3>
+
+        <input [(ngModel)]="newUser.email" placeholder="Correo" />
+        <span class="error" *ngIf="errorCreate.email">{{ errorCreate.email }}</span>
+        
+        <select [(ngModel)]="newUser.rol">
+          <option value="">Selecciona rol</option>
+          <option value="usuario">Usuario</option>
+          <option value="admin">Administrador</option>
+        </select>
+        <span class="error" *ngIf="errorCreate.rol">{{ errorCreate.rol }}</span>
+
+        <select [(ngModel)]="newUser.modulo">
+          <option value="">Selecciona módulo</option>
+          <option value="landing">Landing Page</option>
+          <option value="admin">Aplicación Móvil</option>
+        </select>
+        <span class="error" *ngIf="errorCreate.modulo">{{ errorCreate.modulo }}</span>
+
+        <div class="modal-actions">
+          <button class="btn" (click)="crearUsuario()">Guardar</button>
+          <button class="btn secondary" (click)="showCreateModal = false">Cancelar</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="modal" *ngIf="showEditModal">
+      <div class="modal-content glass">
+        <h3>Editar Usuario</h3>
+
+        <input [(ngModel)]="userEditando.email" />
+        <span class="error" *ngIf="errorEdit.email">{{ errorEdit.email }}</span>
+
+        <select [(ngModel)]="userEditando.rol">
+          <option value="">Selecciona rol</option>
+          <option value="usuario">Usuario</option>
+          <option value="admin">Admin</option>
+        </select>
+        <span class="error" *ngIf="errorEdit.rol">{{ errorEdit.rol }}</span>
+
+        <select [(ngModel)]="userEditando.modulo">
+          <option value="">Selecciona módulo</option>
+          <option value="landing">Landing</option>
+          <option value="admin">Admin</option>
+        </select>
+        <span class="error" *ngIf="errorEdit.modulo">{{ errorEdit.modulo }}</span>
+
+        <div class="modal-actions">
+          <button class="btn" (click)="actualizarUsuario()">Actualizar</button>
+          <button class="btn secondary" (click)="showEditModal = false">Cancelar</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="modal" *ngIf="showDeleteModal">
+      <div class="modal-content glass delete-modal">
+
+        <div class="icon-warning">⚠️</div>
+
+        <h3>Eliminar usuarios</h3>
+
+        <p>
+          ¿Estás seguro que deseas eliminar 
+          <strong>{{ selectedUsers.length }}</strong> usuario(s)?
+        </p>
+
+        <small class="warning-text">
+          Esta acción no se puede deshacer
+        </small>
+
+        <div class="modal-actions">
+          <button 
+            class="btn secondary"
+            (click)="showDeleteModal = false">
+            Cancelar
+          </button>
+
+          <button 
+            class="btn delete"
+            (click)="eliminarSeleccionadosConfirmado()">
+            Sí, eliminar
+          </button>
+        </div>
+
+      </div>
+    </div>
+
+    <div class="toolbar">
+      <div class="search-container">
+        <input 
+          type="text"
+          placeholder="Buscar correo..."
+          [(ngModel)]="searchText"
+          (ngModelChange)="filtrarUsuarios()"  
+        />
+      </div>
+      <div class="selected-info">
+        <span class="badge-selected">
+          {{ selectedUsers.length }} seleccionados
+        </span>
+      </div>
+      <div class="actions">
+        <button class="btn new" (click)="showCreateModal = true">
+          Agregar
+        </button>
+        <button 
+          class="btn edit"
+          [disabled]="selectedUsers.length !== 1"
+          (click)="abrirEdicion()">
+          Editar
+        </button>
+        <button 
+          class="btn delete"
+          [disabled]="selectedUsers.length === 0"
+          (click)="showDeleteModal = true">
+           Eliminar
+        </button>
+      </div>
+    </div>
+    <div class="table-scroll">
+      <table class="tabla">
+
+        <thead>
+          <tr>
+            <th>
+              <input 
+                type="checkbox"
+                [checked]="todosSeleccionados"
+                (change)="toggleSeleccionarTodos($event)"
+              />
+            </th>
+            <th>Email</th>
+            <th>Rol</th>
+            <th>Módulo</th>
+            <th>Fecha</th>
+          </tr>
+        </thead>
+
+        <tbody>
+          <tr 
+            *ngFor="let user of usuariosPaginados"
+            [class.selected]="isSelected(user)"
+          >
+            <td>
+              <input 
+                type="checkbox"
+                [checked]="isSelected(user)"
+                (change)="toggleSelection(user)"
+              />
+            </td>
+
+            <td class="email">{{ user.email }}</td>
+
+            <td>
+              <span class="badge">{{ user.rol }}</span>
+            </td>
+
+            <td>{{ user.modulo }}</td>
+
+            <td class="fecha">
+              {{ user.fecha?.toDate() | date:'short' }}
+            </td>
+          </tr>
+
+          <tr *ngIf="usuariosFiltradosList.length === 0">
+            <td colspan="5" class="no-data">
+              No se encontraron usuarios
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="pagination">
+      <button 
+        (click)="cambiarPagina(currentPage - 1)"
+        [disabled]="currentPage === 1">
+        ⬅
+      </button>
+
+      <span>
+        Página {{ currentPage }} de {{ totalPaginas }}
+      </span>
+
+      <button 
+        (click)="cambiarPagina(currentPage + 1)"
+        [disabled]="currentPage === totalPaginas">
+        ➡
+      </button>
+
+    </div>
+  </div>
+</div>

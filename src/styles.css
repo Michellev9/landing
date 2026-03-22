@@ -2,3 +2,198 @@ html, body {
   height: auto;
   overflow-x: hidden;
 }
+
+body{
+    background: linear-gradient(135deg, #f1f5f9, #e2e8f0);
+
+}
+
+body.dark {
+  background: black;
+  color: white;
+}
+
+body.dark .admin-container,
+body.dark .settings-section {
+  background: black;
+}
+
+body.dark .glass {
+  background: rgba(15, 23, 42, 0.65);
+  border: 1px solid rgba(255,255,255,0.08);
+  box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+}
+
+body.dark .settings-card {
+  background: rgba(15, 23, 42, 0.6);
+  border: 1px solid rgba(255,255,255,0.08);
+  box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+}
+
+body.dark .card-header-config {
+  background: rgba(15, 23, 42, 0.4);
+  border-bottom: 1px solid rgba(255,255,255,0.08);
+}
+
+body.dark .card-header h3{
+  color: #f1f5f9;
+}
+
+
+body.dark .title,
+body.dark .section-title {
+  color: #f1f5f9;
+}
+
+body.dark .subtitle {
+  color: #94a3b8;
+}
+
+body.dark .card {
+  background: rgba(69, 72, 80, 0.525);
+  border: 1px solid rgba(255,255,255,0.08);
+}
+
+body.dark .value {
+  color: #f1f5f9;
+}
+
+body.dark .card h3 {
+  color: #cbd5f5;
+}
+
+body.dark .chart-container{
+  background: rgba(69, 72, 80, 0.525);
+  border: 1px solid rgba(255,255,255,0.08);
+}
+
+body.dark .table-wrapper.full {
+  background: rgba(69, 72, 80, 0.525);
+  border: 1px solid rgba(255,255,255,0.08);
+}
+
+
+body.dark .tabla thead th {
+  background: rgba(69, 72, 80, 0.525);
+}
+
+
+body.dark .tabla tr {
+  background: rgba(15,23,42,0.6);
+}
+
+body.dark .tabla tr:hover {
+  background: rgba(52,211,153,0.15);
+}
+
+body.dark .tabla tr.selected {
+  background: rgba(52,211,153,0.25);
+}
+
+body.dark .tabla thead th {
+  background: rgba(69, 72, 80, 0.525);
+  color: #94a3b8;
+}
+
+body.dark .tabla td {
+  background: rgb(46, 50, 61);
+}
+
+body.dark .tabla tr {
+  background: rgba(15,23,42,0.6);
+}
+
+body.dark .tabla tr:hover {
+  background: rgba(52,211,153,0.15);
+}
+
+body.dark .tabla tr.selected {
+  background: rgba(52,211,153,0.25);
+}
+
+body.dark .badge {
+  background: linear-gradient(135deg, #34d399, #4ade80);
+  color: #022c22;
+}
+
+body.dark .badge-selected {
+  background: #34d399;
+  color: #022c22;
+}
+
+body.dark .btn {
+background: linear-gradient(135deg, rgb(52, 211, 153), rgb(74, 222, 128));  color: white;
+}
+
+/* NUEVO */
+body.dark .btn.new {
+  background: linear-gradient(135deg, #facc15, #fde047);
+  color: #422006;
+}
+
+/* EDIT */
+body.dark .btn.edit {
+  background: linear-gradient(135deg, #3b82f6, #60a5fa);
+}
+
+/* DELETE */
+body.dark .btn.delete {
+  background: linear-gradient(135deg, #ef4444, #f87171);
+}
+
+/* SECUNDARIO */
+body.dark .btn.secondary {
+  background: #1e293b;
+  color: #e2e8f0;
+}
+
+body.dark .btn {
+  color: white;
+}
+
+/* NUEVO */
+body.dark .btn.new {
+  background: linear-gradient(135deg, #facc15, #fde047);
+  color: #422006;
+}
+
+/* EDIT */
+body.dark .btn.edit {
+  background: linear-gradient(135deg, #3b82f6, #60a5fa);
+}
+
+/* DELETE */
+body.dark .btn.delete {
+  background: linear-gradient(135deg, #ef4444, #f87171);
+}
+
+/* SECUNDARIO */
+body.dark .btn.secondary {
+  background: #1e293b;
+  color: #e2e8f0;
+}
+
+body.dark input,
+body.dark select {
+  background: rgba(30,41,59,0.8);
+  color: #f1f5f9;
+  border: 1px solid rgba(255,255,255,0.1);
+}
+
+body.dark input::placeholder {
+  color: #94a3b8;
+}
+
+body.dark .search-container {
+  border: 1px solid rgba(255,255,255,0.15);
+}
+
+body,
+.card,
+.glass,
+.tabla tr,
+.btn,
+input,
+select {
+  transition: all 0.3s ease;
+}

@@ -1,125 +1,173 @@
-import { Component, AfterViewInit, OnDestroy } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import { Firestore, collection, getDocs } from '@angular/fire/firestore';
+import { CommonModule } from '@angular/common';
 import Chart from 'chart.js/auto';
+
+interface Usuario {
+  id: string;
+  email: string;
+  rol: string;
+  modulo: string;
+  fecha: any;
+}
 
 @Component({
   selector: 'app-dashboard',
+  imports: [CommonModule],
   templateUrl: './dashboard.html',
   styleUrl: './dashboard.css'
 })
-export class Dashboard implements AfterViewInit, OnDestroy {
+export class Dashboard implements OnInit {
 
-  private chartInstance: Chart | null = null;
-  
+  listaUsuarios: Usuario[] = [];
 
-  // Datos de ejemplo para cada rango
-  private chartData = {
-    week: {
-      labels: ['Lun', 'Mar', 'Mié', 'Jue', 'Vie', 'Sáb', 'Dom'],
-      data: [12, 19, 8, 15, 22, 30, 18]
-    },
-    month: {
-      labels: ['Sem 1', 'Sem 2', 'Sem 3', 'Sem 4'],
-      data: [65, 78, 92, 110]
-    },
-    year: {
-      labels: ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'],
-      data: [450, 520, 480, 610, 720, 850, 920, 880, 950, 1020, 980, 1100]
-    }
-  };
+  totalUsuarios = 0;
+  totalAdmins = 0;
+  totalLanding = 0;
+  registrosHoy = 0;
+  ultimosUsuarios: Usuario[] = [];
+  vistasChart: any;
+  rolesChart: any;
 
-  // Rango activo por defecto
-  activeRange: 'week' | 'month' | 'year' = 'week';
+  constructor(private firestore: Firestore) {}
+
+  async ngOnInit() {
+    await this.obtenerUsuariosDashboard();
+  }
 
   ngAfterViewInit() {
-    this.createChart();
-  }
+  this.crearGraficaVistas();
+}
 
-  ngOnDestroy() {
-    if (this.chartInstance) {
-      this.chartInstance.destroy();
-      this.chartInstance = null;
-    }
-  }
+async obtenerUsuariosDashboard() {
 
-  changeRange(range: 'week' | 'month' | 'year') {
-    this.activeRange = range;
-    this.createChart();
-  }
+  const snapshot = await getDocs(collection(this.firestore, 'usuariosWeb'));
 
-  private createChart() {
-    const ctx = document.getElementById('chart') as HTMLCanvasElement;
+  const usuarios: any[] = snapshot.docs.map(doc => ({
+    id: doc.id,
+    ...(doc.data() as any)
+  }));
 
-    // Destruir gráfico anterior si existe
-    if (this.chartInstance) {
-      this.chartInstance.destroy();
-    }
+  this.totalUsuarios = usuarios.length;
 
-    const currentData = this.chartData[this.activeRange];
+  this.totalAdmins = usuarios.filter(u => u.rol === 'admin').length;
 
-    this.chartInstance = new Chart(ctx, {
-      type: 'line',
-      data: {
-        labels: currentData.labels,
-        datasets: [
-          {
-            label: 'Usuarios activos',
-            data: currentData.data,
-            borderColor: '#3b82f6',
-            backgroundColor: 'rgba(59, 130, 246, 0.15)',
-            tension: 0.4,
-            fill: true,
-            pointBackgroundColor: '#3b82f6',
-            pointBorderColor: '#fff',
-            pointHoverRadius: 8,
-            pointRadius: 5
+  this.totalLanding = usuarios.filter(u => u.modulo === 'landing').length;
+
+  const hoy = new Date().toDateString();
+
+  this.registrosHoy = usuarios.filter(u =>
+    u.fecha?.toDate().toDateString() === hoy
+  ).length;
+
+  this.ultimosUsuarios = usuarios
+    .sort((a, b) => b.fecha?.seconds - a.fecha?.seconds)
+    .slice(0, 5);
+
+  setTimeout(() => {
+    this.crearGraficaRoles();
+  }, 100);
+}
+
+crearGraficaVistas() {
+
+  const ctx = document.getElementById('vistasChart') as any;
+
+  const isDark = document.body.classList.contains('dark');
+
+  const textColor = isDark ? '#e2e8f0' : '#1e293b';
+  const gridColor = isDark ? 'rgba(255,255,255,0.1)' : 'rgba(0,0,0,0.05)';
+
+  this.vistasChart = new Chart(ctx, {
+    type: 'line',
+    data: {
+      labels: ['Lun', 'Mar', 'Mié', 'Jue', 'Vie', 'Sáb', 'Dom'],
+      datasets: [
+        {
+          label: 'Vistas',
+          data: [120, 190, 140, 220, 180, 260, 210],
+          borderColor: '#34d399',
+          backgroundColor: 'rgba(52, 211, 153, 0.2)',
+          tension: 0.4,
+          fill: true
+        }
+      ]
+    },
+    options: {
+      responsive: true,
+      plugins: {
+        legend: {
+          labels: {
+            color: textColor   // 🔥 TEXTO
           }
-        ]
+        }
       },
-      options: {
-        responsive: true,
-        maintainAspectRatio: false,
-        plugins: {
-          legend: {
-            position: 'top',
-            labels: {
-              font: { size: 14 }
-            }
-          },
-          tooltip: {
-            mode: 'index',
-            intersect: false
-          }
+      scales: {
+        x: {
+          ticks: { color: textColor },
+          grid: { color: gridColor }
         },
-        scales: {
-          y: {
-            beginAtZero: true,
-            title: {
-              display: true,
-              text: 'Usuarios activos'
-            }
-          },
-          x: {
-            title: {
-              display: true,
-              text: this.getXAxisTitle()
-            }
-          }
-        },
-        interaction: {
-          mode: 'nearest',
-          axis: 'x',
-          intersect: false
+        y: {
+          ticks: { color: textColor },
+          grid: { color: gridColor }
         }
       }
-    });
-  }
-
-  private getXAxisTitle(): string {
-    switch (this.activeRange) {
-      case 'week':  return 'Días de la semana';
-      case 'month': return 'Semanas del mes';
-      case 'year':  return 'Meses del año';
-      default:      return 'Período';
     }
-  }
+  });
+
+}
+
+crearGraficaRoles() {
+
+  const isDark = document.body.classList.contains('dark');
+
+  const textColor = isDark ? '#e2e8f0' : '#1e293b';
+
+  this.rolesChart = new Chart('rolesChart', {
+    type: 'bar',
+    data: {
+      labels: ['Admins', 'Usuarios'],
+      datasets: [{
+        data: [
+          this.totalAdmins,
+          this.totalUsuarios - this.totalAdmins
+        ],
+        backgroundColor: [
+          '#34d399',
+          '#fbbf24'
+        ]
+      }]
+    },
+    options: {
+      plugins: {
+        legend: {
+          display: false
+        }
+      },
+      scales: {
+        x: {
+          ticks: { color: textColor },
+          grid: { display: false }
+        },
+        y: {
+          ticks: { color: textColor },
+          grid: {
+            color: isDark ? 'rgba(255,255,255,0.1)' : 'rgba(0,0,0,0.05)'
+          }
+        }
+      }
+    }
+  });
+
+}
+
+actualizarGraficas() {
+  this.vistasChart?.destroy();
+  this.rolesChart?.destroy();
+
+  this.crearGraficaVistas();
+  this.crearGraficaRoles();
+}
+
+
 }

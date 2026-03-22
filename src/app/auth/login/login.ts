@@ -6,7 +6,8 @@ import { Auth, signInWithEmailAndPassword, createUserWithEmailAndPassword, updat
 import { GoogleAuthProvider, signInWithPopup, fetchSignInMethodsForEmail } from '@angular/fire/auth';
 import { multiFactor } from 'firebase/auth';
 import { RecaptchaVerifier, PhoneAuthProvider,PhoneMultiFactorGenerator,MultiFactorResolver, getMultiFactorResolver, sendEmailVerification} from 'firebase/auth';
-import { MultiFactorError } from 'firebase/auth';
+import { Firestore, collection, addDoc } from '@angular/fire/firestore';
+
 
 @Component({
   selector: 'app-login',
@@ -70,7 +71,7 @@ mfaVerificationId: string = '';
     
   ];
 
-  constructor(private ngZone: NgZone, private cdr: ChangeDetectorRef, private router: Router, private auth: Auth) {}
+  constructor(private ngZone: NgZone, private cdr: ChangeDetectorRef, private router: Router, private auth: Auth, private firestore: Firestore) {}
 
 
   ngOnInit() {
@@ -328,11 +329,18 @@ async register() {
       this.regPassword
     );
 
+    await addDoc(collection(this.firestore, 'usuariosWeb'), {
+      uid: userCredential.user.uid,
+      email: this.regEmail,
+      rol: 'usuario',
+      modulo: 'landing',
+      fecha: new Date()
+    });
+
     await sendEmailVerification(userCredential.user);
 
     this.successMessage = 'Cuenta creada. Verifica tu correo';
 
-    // 👉 Mostrar modal para activar MFA
     setTimeout(() => {
       this.showPhoneModal = true;
     }, 1500);

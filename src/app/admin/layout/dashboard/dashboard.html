@@ -1,112 +1,73 @@
-<main class="dashboard-content">
+<div class="admin-container">
+  <div class="glass dashboard-wrapper">
+    <div class="card-header">
+      <h2 class="title">Dashboard</h2>
+      <p class="subtitle">Resumen general del sistema</p>
+    </div>
 
-  <h1 class="title">Dashboard StarNutri</h1>
+    <div class="dashboard-cards">
+      <div class="card">
+        <span class="icon">👥</span>
+        <h3>Total Usuarios</h3>
+        <p class="value">{{ totalUsuarios }}</p>
+      </div>
 
-  <!-- KPI CARDS -->
-  <section class="cards">
-    <div class="card green">
-      <div class="icon">👶</div>
-      <div class="card-content">
-        <h4>Usuarios</h4>
-        <h2>120</h2>
-        <span class="trend">+12% este mes</span>
+      <div class="card">
+        <span class="icon">🛡️</span>
+        <h3>Administradores Activos</h3>
+        <p class="value">{{ totalAdmins }}</p>
+      </div>
+
+      <div class="card">
+        <span class="icon">📅</span>
+        <h3>Registros de Hoy</h3>
+        <p class="value">{{ registrosHoy }}</p>
       </div>
     </div>
 
-    <div class="card blue">
-      <div class="icon">🍎</div>
-      <div class="card-content">
-        <h4>Niños activos</h4>
-        <h2>98</h2>
-        <span class="trend">Alta participación</span>
+    <div class="dashboard-bottom">
+       <div class="chart-container">
+        <h3 class="section-title">Vistas de usuarios</h3>
+        <canvas id="vistasChart"></canvas>
       </div>
-    </div>
-
-    <div class="card purple">
-      <div class="icon">📊</div>
-      <div class="card-content">
-        <h4>Progreso nutricional</h4>
-        <h2>78%</h2>
-        <span class="trend">Promedio general</span>
-      </div>
-    </div>
-  </section>
-
-  <!-- GRID -->
-  <div class="grid">
-
-    <div class="chart glass">
-      <h3>Uso de la app</h3>
-
-      <div class="range-buttons">
-        <button [class.active]="activeRange === 'week'" (click)="changeRange('week')">Semana</button>
-        <button [class.active]="activeRange === 'month'" (click)="changeRange('month')">Mes</button>
-        <button [class.active]="activeRange === 'year'" (click)="changeRange('year')">Año</button>
-      </div>
-
       <div class="chart-container">
-        <canvas id="chart"></canvas>
+        <h3 class="section-title">Usuarios por rol</h3>
+        <canvas id="rolesChart"></canvas>
       </div>
-    </div>
 
-    <aside class="side">
-      <div class="alerts glass">
-        <h3>Alertas</h3>
-        <p class="alert warning">⚠️ Bajo consumo de frutas</p>
-        <p class="alert warning">⚠️ Padres sin actividad</p>
+      <div class="table-wrapper full">
+        <h3 class="section-title">Últimos usuarios</h3>
+
+        <div class="table-scroll">
+          <table class="tabla modern">
+            <thead>
+              <tr>
+                <th>Email</th>
+                <th>Rol</th>
+                <th>Fecha</th>
+              </tr>
+            </thead>
+
+            <tbody>
+              <tr *ngFor="let user of ultimosUsuarios">
+                <td class="email">{{ user.email }}</td>
+                <td><span class="badge">{{ user.rol }}</span></td>
+                <td>{{ user.fecha?.toDate() | date:'short' }}</td>
+              </tr>
+
+              <tr *ngIf="ultimosUsuarios.length === 0">
+                <td colspan="3" class="no-data">
+                  No hay datos disponibles
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
       </div>
-    </aside>
+
+    </div>
 
   </div>
 
-  <!-- TABLA -->
-  <section class="table-section glass">
-    <h3>Usuarios recientes</h3>
-
-    <div class="table-wrapper">
-      <table>
-        <thead>
-          <tr>
-            <th>Nombre</th>
-            <th>Progreso</th>
-            <th>Estado</th>
-          </tr>
-        </thead>
-
-        <tbody>
-          <tr>
-            <td data-label="Nombre">Juan</td>
-            <td data-label="Progreso">
-              <div class="progress">
-                <div class="progress-bar" style="width: 80%"></div>
-              </div>
-            </td>
-            <td data-label="Estado" class="status active">Activo</td>
-          </tr>
-
-          <tr>
-            <td data-label="Nombre">María</td>
-            <td data-label="Progreso">
-              <div class="progress">
-                <div class="progress-bar" style="width: 65%"></div>
-              </div>
-            </td>
-            <td data-label="Estado" class="status active">Activo</td>
-          </tr>
-
-          <tr>
-            <td data-label="Nombre">Carlos</td>
-            <td data-label="Progreso">
-              <div class="progress">
-                <div class="progress-bar" style="width: 40%"></div>
-              </div>
-            </td>
-            <td data-label="Estado" class="status inactive">Inactivo</td>
-          </tr>
-
-        </tbody>
-      </table>
-    </div>
-  </section>
-
-</main>
+</div>

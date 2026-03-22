@@ -1,105 +1,120 @@
-<!-- Sección de Configuración -->
 <section class="settings-section">
+
   <h2 class="section-title">Configuración del Dashboard</h2>
 
   <div class="settings-grid">
 
-    <!-- Tarjeta: Perfil y Cuenta -->
+    <!-- PERFIL -->
     <div class="settings-card">
-      <div class="card-header">
-        <div class="icon-wrapper blue">
-          <span>👤</span>
-        </div>
+      <div class="card-header-config">
+        <div class="icon-wrapper green">👤</div>
         <h3>Perfil y Cuenta</h3>
       </div>
+
       <div class="card-body">
         <div class="form-group">
           <label>Nombre completo</label>
-          <input type="text" value="Admin StarNutri" placeholder="Tu nombre">
+          <input [(ngModel)]="perfil.nombre" placeholder="Tu nombre">
         </div>
+
         <div class="form-group">
-          <label>Email / Usuario</label>
-          <input type="email" value="starnutri@gmail.com" placeholder="tu@email.com">
+          <label>Email</label>
+          <input [(ngModel)]="perfil.email" type="email">
         </div>
+
         <div class="form-group">
           <label>Rol</label>
-          <select>
-            <option selected>Administrador/a</option>
-
+          <select [(ngModel)]="perfil.rol">
+            <option value="admin">Administrador</option>
+            <option value="usuario">Usuario</option>
           </select>
         </div>
-        <button class="btn btn-outline danger">Guardar cambios</button>
+
+        <button class="btn save" (click)="guardarPerfil()">Guardar cambios</button>
       </div>
     </div>
 
-    <!-- Tarjeta: Preferencias del Dashboard -->
+    <!-- PREFERENCIAS -->
     <div class="settings-card">
-      <div class="card-header">
-        <div class="icon-wrapper purple">
-          <span>⚙️</span>
-        </div>
-        <h3>Preferencias del Dashboard</h3>
+      <div class="card-header-config">
+        <div class="icon-wrapper green">⚙️</div>
+        <h3>Preferencias</h3>
       </div>
+
       <div class="card-body">
+
+      <div class="toggle-group">
+        <span>Modo oscuro</span>
+        <label class="switch">
+          <input 
+            type="checkbox" 
+            [(ngModel)]="prefs.darkMode"
+            (change)="guardarPreferencias()"
+          >
+          <span class="slider"></span>
+        </label>
+      </div>
+
         <div class="toggle-group">
-          <label>Modo oscuro</label>
+          <span>Alertas en tiempo real</span>
           <label class="switch">
-            <input type="checkbox" checked>
-            <span class="slider round"></span>
+            <input type="checkbox" [(ngModel)]="prefs.alertas">
+            <span class="slider"></span>
           </label>
         </div>
+
         <div class="toggle-group">
-          <label>Mostrar alertas en tiempo real</label>
+          <span>Notificaciones por email</span>
           <label class="switch">
-            <input type="checkbox" checked>
-            <span class="slider round"></span>
+            <input type="checkbox" [(ngModel)]="prefs.emailNotif">
+            <span class="slider"></span>
           </label>
         </div>
-        <div class="toggle-group">
-          <label>Notificaciones por email</label>
-          <label class="switch">
-            <input type="checkbox">
-            <span class="slider round"></span>
-          </label>
-        </div>
-        <div class="form-group mt-1">
-          <label>Idioma principal</label>
-          <select>
-            <option selected>Español (México)</option>
-            <option>English (US)</option>
+
+        <div class="form-group">
+          <label>Idioma</label>
+          <select [(ngModel)]="prefs.idioma">
+            <option value="es">Español</option>
+            <option value="en">English</option>
           </select>
         </div>
+
+        <button class="btn save" (click)="guardarPreferencias()">Guardar preferencias</button>
+
       </div>
     </div>
 
-    <!-- Tarjeta: Seguridad -->
+    <!-- SEGURIDAD -->
     <div class="settings-card">
-      <div class="card-header">
-        <div class="icon-wrapper red">
-          <span>🔒</span>
-        </div>
+      <div class="card-header-config">
+        <div class="icon-wrapper red">🔒</div>
         <h3>Seguridad</h3>
       </div>
+
       <div class="card-body">
+
         <div class="form-group">
           <label>Contraseña actual</label>
-          <input type="password" placeholder="••••••••">
+          <input type="password" [(ngModel)]="password.actual">
         </div>
+
         <div class="form-group">
           <label>Nueva contraseña</label>
-          <input type="password" placeholder="Nueva contraseña">
+          <input type="password" [(ngModel)]="password.nueva">
         </div>
-        <div class="form-group">
-          <label>Confirmar nueva contraseña</label>
-          <input type="password" placeholder="Repite la contraseña">
-        </div>
-        <button class="btn btn-outline danger">Cambiar contraseña</button>
 
-        <div class="mt-2">
-          <p class="security-note">Sesión actual: Activa desde hace 2 horas (Ciudad de México)</p>
-          <button class="btn btn-outline logout">Cerrar todas las sesiones</button>
+        <div class="form-group">
+          <label>Confirmar contraseña</label>
+          <input type="password" [(ngModel)]="password.confirmar">
         </div>
+
+        <button class="btn danger" (click)="cambiarPassword()">
+          Cambiar contraseña
+        </button>
+
       </div>
     </div>
 
+  </div>
 
+</section>

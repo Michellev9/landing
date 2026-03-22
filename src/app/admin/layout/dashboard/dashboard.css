@@ -1,416 +1,190 @@
-.dashboard-content {
-  width: calc(100% - 260px);
-  max-width: 100%;
-  margin-right: auto;
+/* 🌌 FONDO GENERAL */
+.admin-container {
+  padding: 2rem;
   margin-left: 260px;
-  padding: 32px 24px;
-  box-sizing: border-box;
-  overflow-x: hidden;
+  background: linear-gradient(135deg, #f1f5f9, #e2e8f0);
+  min-height: 100vh;
 }
 
 .glass {
-  background: rgba(255, 255, 255, 0.45);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  border: 1px solid rgba(255, 255, 255, 0.7);
-  box-shadow:
-    0 10px 30px rgba(0, 0, 0, 0.05),
-    inset 0 0 0 1px rgba(255, 255, 255, 0.4);
+  background: rgba(255, 255, 255, 0.721);
+  backdrop-filter: blur(22px);
+  -webkit-backdrop-filter: blur(22px);
+  border: 1px solid rgba(255,255,255,0.3);
+  box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+  border-radius: 20px;
 }
 
-/* 🌟 TITULO GLASS */
+.dashboard-wrapper {
+  padding-bottom: 2rem;
+  overflow: hidden;
+}
+
+.card-header {
+  padding: 1.5rem 2rem 1rem;
+}
+
 .title {
-  width: 100%;
-  padding: 1rem 2rem;
-  border-radius: 50px;
   font-size: 2rem;
-  font-weight: 700;
-  margin-bottom: 2rem;
-  color: #111827;
-  background: rgba(255,255,255,0.45);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  border: 1px solid rgba(255,255,255,0.7);
-  box-shadow:
-    0 10px 30px rgba(0,0,0,0.05),
-    inset 0 0 0 1px rgba(255,255,255,0.4);
+  font-weight: 800;
+  color: black;
 }
 
-.cards {
+.subtitle {
+  font-size: 14px;
+  color: #64748b;
+}
+
+.dashboard-cards {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(260px, 320px));
-  justify-content: center; /* 🔥 clave */
+  grid-template-columns: repeat(3, 1fr);
   gap: 1.5rem;
-  margin-bottom: 2.5rem;
+  padding: 1rem 2rem;
 }
 
 .card {
-  background: rgba(255, 255, 255, 0.42);
-  backdrop-filter: blur(12px);
-  border: 1px solid rgba(255, 255, 255, 0.5);
-  border-radius: 16px;
-  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.07);
-  padding: 1.6rem;
-  transition: all 0.25s ease;
-   display: flex;
-  align-items: center;
-  gap: 1rem;
+  border-radius: 18px;
+  background: rgba(255,255,255,0.7);
+  border: 1px solid rgba(255,255,255,0.4);
+  box-shadow: 0 8px 20px rgba(0,0,0,0.05);
+  transition: 0.3s;
+  text-align: center;
 }
 
-.card:hover {
-  transform: translateY(-6px);
-  box-shadow: 0 15px 35px rgba(0,0,0,0.08);
-}
-
-.card.green  { border-left: 5px solid var(--green); }
-.card.blue   { border-left: 5px solid var(--blue); }
-.card.purple { border-left: 5px solid var(--purple); }
-.card.orange { border-left: 5px solid var(--orange); }
-
-/* ICONOS */
-.icon {
+.card .icon {
   font-size: 2.5rem;
-  width: 64px;
-  height: 64px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border-radius: 12px;
-  background: rgba(255,255,255,0.35);
-  backdrop-filter: blur(8px);
+  margin-bottom: 10px;
 }
 
-.card-content {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
+.card h3 {
+  font-size: 14px;
+  color: black;
+  margin-bottom: 5px;
 }
 
-.card-content h4 {
-  margin: 0 0 0.25rem;
-  font-size: 0.95rem;
-  color: #64748b;
+.value {
+  font-size: 2rem;
+  font-weight: 800;
+  color: black;
 }
 
-.card-content h2 {
-  margin: 0;
-  font-size: 2.25rem;
-  line-height: 1;
-  color: #111827;
+.section-title {
+  font-size: 15px;
+  font-weight: 700;
+  margin-bottom: 10px;
+  color: black;
 }
 
-.trend {
-  font-size: 0.875rem;
-  color: #10b981;
-  font-weight: 500;
-}
-
-/* 🌟 GRID CENTRAL */
-.grid {
+.dashboard-bottom {
   display: grid;
-  grid-template-columns: 2fr 1fr;
-  gap: 1.75rem;
-  margin-bottom: 2.5rem;
-  align-items: start; 
-}
-
-@media (max-width: 1024px) {
-  .grid {
-    grid-template-columns: 1fr;
-  }
-}
-
-/* 🌟 BLOQUES GLASS */
-.chart,
-.actions,
-.alerts,
-.table-section {
-  border-radius: 16px;
-  padding: 1.5rem;
-  background: linear-gradient(
-    135deg,
-    rgba(255,255,255,0.18),
-    rgba(255,255,255,0.08)
-  );
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  border: 1px solid rgba(255,255,255,0.7);
-  box-shadow:
-    0 10px 25px rgba(0,0,0,0.05),
-    inset 0 0 0 1px rgba(255,255,255,0.3);
-  display: flex;
-  flex-direction: column;
-}
-
-.chart h3,
-.actions h3,
-.alerts h3,
-.table-section h3 {
-  padding: 0.7rem 1.6rem;
-  font-size: 1.15rem;
-  margin-bottom: 1.25rem;
-}
-
-/* BOTONES ACCIONES */
-.actions button {
-  width: 100%;
-  padding: 0.85rem;
-  margin-bottom: 0.75rem;
-  border: none;
-  border-radius: 10px;
-  cursor: pointer;
-  font-weight: 500;
-  transition: 0.2s;
-}
-
-.actions button:hover {
-  background: rgba(255,255,255,0.9);
-}
-
-.alert {
-  padding: 0.85rem 1rem;
-  border-radius: 8px;
-  margin-bottom: 0.75rem;
-  font-size: 0.95rem;
-}
-
-.alert.warning {
-  background: #fef3c7;
-  color: #92400e;
-}
-
-/* 🌟 TABLA */
-.table-wrapper {
-  border-radius: 12px;
-  overflow: hidden;
-  background: transparent;
-}
-
-table {
-  width: 100%;
-  border-collapse: collapse;
-  background: transparent;
-}
-
-th, td {
-  padding: 1rem 1.25rem;
-  text-align: left;
-}
-
-th {
-  color: #64748b;
-  text-transform: uppercase;
-  font-size: 0.8rem;
-}
-
-/* PROGRESS */
-.progress {
-  height: 8px;
-  background: #fef3c7;
-  border-radius: 4px;
-  overflow: hidden;
-}
-
-.progress-bar {
-  height: 100%;
-  background: var(--primary);
-  transition: width 0.4s ease;
-}
-
-.side {
-  display: flex;
-  flex-direction: column;
+  grid-template-columns: 1fr 1fr;
   gap: 1.5rem;
-}
-
-/* STATUS */
-.status {
-  padding: 0.35rem 0.85rem;
-  border-radius: 999px;
-  font-size: 0.8rem;
-  font-weight: 600;
-}
-
-.status.active {
-  background: #d1fae5;
-  color: #065f46;
-}
-
-.status.inactive {
-  background: #fee2e2;
-  color: #991b1b;
-}
-
-/* 🌟 RANGE BUTTONS */
-.range-buttons {
-  display: flex;
-  gap: 10px;
-  justify-content: flex-end;
-  margin-bottom: 1rem;
-}
-
-.range-buttons button {
-  padding: 8px 16px;
-  border: none;
-  border-radius: 6px;
-  cursor: pointer;
-  transition: 0.2s;
-}
-
-.range-buttons button:hover {
-  background: rgba(255,255,255,1);
-}
-
-.range-buttons button.active {
-  background: #3b82f6;
+  padding: 1rem 2rem;
 }
 
 .chart-container {
-  position: relative;
-  width: 100%;
-  height: 320px;
+  background: white;
+  border-radius: 18px;
+  padding: 1.5rem;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.05);
+  border: 1px solid rgba(0,0,0,0.05);
 }
 
-/* ============================= */
-/* 📱 MOBILE FIRST AJUSTES */
-/* ============================= */
+.table-wrapper.full {
+  grid-column: span 2;
+  background: white;
+  border-radius: 18px;
+  padding: 1.5rem;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.05);
+}
 
-/* 🔹 Quitar margen lateral en pantallas pequeñas */
-@media (max-width: 768px) {
-  .dashboard-content {
+.table-scroll {
+  overflow-x: auto;
+}
+
+.tabla.modern {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0 10px;
+}
+
+.tabla.modern thead th {
+  font-size: 13px;
+  text-transform: uppercase;
+  color: black;
+  padding: 15px;
+  text-align: left;
+}
+
+.tabla.modern tbody tr {
+  background: rgba(255,255,255,0.7);
+  backdrop-filter: blur(10px);
+  transition: 0.3s;
+}
+
+.tabla.modern tbody tr:hover {
+  background: rgba(199, 243, 211, 0.5); /* verde suave */
+  transform: scale(1.01);
+}
+
+.tabla.modern td {
+  padding: 14px;
+}
+
+.badge {
+  background: linear-gradient(135deg, #34d399, #86efac);
+  color: #065f46;
+  padding: 5px 12px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.no-data {
+  text-align: center;
+  padding: 20px;
+  color: #64748b;
+}
+
+@media (max-width: 1024px) {
+  .admin-container {
     margin-left: 0;
-    width: 80%;
+  }
+
+  .dashboard-cards {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 768px) {
+
+  .dashboard-bottom {
+    grid-template-columns: 1fr;
+  }
+
+  .table-wrapper.full {
+    grid-column: span 1;
+  }
+
+  .dashboard-cards {
+    grid-template-columns: 1fr;
   }
 
   .title {
     font-size: 1.5rem;
-    padding: 0.8rem 1.2rem;
-    text-align: center;
-  }
-}
-
-/* ============================= */
-/* 📊 CARDS RESPONSIVE */
-/* ============================= */
-@media (max-width: 600px) {
-  .cards {
-    grid-template-columns: 1fr;
-    justify-content: stretch;
   }
 
-  .card {
-    width: 100%;
-  }
-
-  .icon {
-    width: 55px;
-    height: 55px;
-    font-size: 1.8rem;
-  }
-
-  .card-content h2 {
+  .value {
     font-size: 1.6rem;
   }
+
 }
 
-/* ============================= */
-/* 📉 GRID CENTRAL */
-/* ============================= */
-@media (max-width: 1024px) {
-  .grid {
-    grid-template-columns: 1fr;
-  }
-
-  .chart-container {
-    height: 250px;
-  }
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(15px); }
+  to { opacity: 1; transform: translateY(0); }
 }
 
-/* ============================= */
-/* 📱 BOTONES RANGE */
-/* ============================= */
-@media (max-width: 600px) {
-  .range-buttons {
-    justify-content: center;
-    flex-wrap: wrap;
-  }
-
-  .range-buttons button {
-    flex: 1;
-    font-size: 0.8rem;
-    padding: 6px;
-  }
+.dashboard-wrapper {
+  animation: fadeIn 0.5s ease;
 }
-
-/* ============================= */
-/* 📋 TABLA RESPONSIVE */
-/* ============================= */
-@media (max-width: 768px) {
-  table thead {
-    display: none;
-  }
-
-  table, 
-  tbody, 
-  tr, 
-  td {
-    display: block;
-    width: 100%;
-  }
-
-  tr {
-    margin-bottom: 1rem;
-    padding: 1rem;
-    border-radius: 12px;
-    background: rgba(255,255,255,0.4);
-    backdrop-filter: blur(10px);
-  }
-
-  td {
-    text-align: right;
-    padding: 0.5rem 0;
-    position: relative;
-  }
-
-  td::before {
-    content: attr(data-label);
-    position: absolute;
-    left: 0;
-    font-weight: 600;
-    color: #64748b;
-  }
-
-  .progress {
-    margin-top: 6px;
-  }
-}
-
-/* ============================= */
-/* 📦 ALERTAS Y SIDEBAR */
-/* ============================= */
-@media (max-width: 768px) {
-  .side {
-    flex-direction: column;
-  }
-
-  .alerts {
-    width: 100%;
-  }
-}
-
-/* ============================= */
-/* 💻 PANTALLAS GRANDES */
-/* ============================= */
-@media (min-width: 1400px) {
-  .dashboard-content {
-    padding: 40px 80px;
-  }
-
-  .chart-container {
-    height: 400px;
-  }
-}
-
-
-
-
