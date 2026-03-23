@@ -1,4 +1,3 @@
-
 <button class="menu-toggle" (click)="toggleSidebar()">
   ☰
 </button>
@@ -14,7 +13,6 @@
   </div>
 
   <nav class="main-nav">
-
     <div class="nav-section">
       <p class="nav-title">General</p>
       <a (click)="navigateTo('/admin/dashboard')" class="nav-link">🏠 Dashboard</a>
@@ -26,23 +24,33 @@
       <a (click)="navigateTo('/admin/gestion-contacto')" class="nav-link">📬 Contactos</a>
     </div>
 
-
     <div class="nav-section">
       <p class="nav-title">Sistema</p>
       <a (click)="navigateTo('/admin/configuracion')" class="nav-link">⚙️ Configuración</a>
     </div>
-
   </nav>
+
   <div class="user-profile">
-  <div class="avatar-placeholder"></div>
+    <div class="avatar-placeholder"></div>
+    <div class="user-info">
+      <p class="user-name">Administrador</p>
+      <p class="user-role">Admin</p>
+    </div>
 
-  <div class="user-info">
-    <p class="user-name">Administrador</p>
-    <p class="user-role">Admin</p>
+    <!-- ✅ Botón logout abre modal -->
+    <button class="logout-btn" (click)="openLogoutModal()">
+      ⏻
+    </button>
   </div>
-
-  <button class="logout-btn" (click)="logout()">
-    ⏻
-  </button>
-</div>
 </aside>
+
+<div class="logout-modal-backdrop" *ngIf="showLogoutModal">
+  <div class="logout-modal glass">
+    <h2>Cerrar Sesión</h2>
+    <p>¿Estás seguro que deseas salir?</p>
+    <div class="modal-actions">
+      <button class="btn-cancel" (click)="closeLogoutModal()">Cancelar</button>
+      <button class="btn-confirm" (click)="confirmLogout()">Salir</button>
+    </div>
+  </div>
+</div>

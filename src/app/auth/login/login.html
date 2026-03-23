@@ -1,4 +1,3 @@
-
 <div class="stars-background">
   <div class="stars-layer base"
        [ngStyle]="{'transform': 'translate(' + mouseX * 0.01 + 'px, ' + mouseY * 0.01 + 'px)'}"></div>
@@ -23,84 +22,46 @@
 <!-- MODAL OTP -->
 <div class="otp-modal-backdrop" *ngIf="showOtpInput">
   <div class="otp-modal glass">
-
-
     <h2>Verificación de seguridad</h2>
-    <p class="otp-subtitle">
-      Ingresa el código enviado a tu celular
-    </p>
+    <p class="otp-subtitle">Ingresa el código enviado a tu celular</p>
 
-    <!-- INPUT ESTILO PIN -->
     <div class="otp-input-group">
-      <input
-        type="text"
-        maxlength="6"
-        [(ngModel)]="otpCode"
-        placeholder="______"
-        class="otp-input"
-      />
+      <input type="text" maxlength="6" [(ngModel)]="otpCode" placeholder="______" class="otp-input"/>
     </div>
 
-    <button class="btn-verify" (click)="verifyOtp()">
-      Verificar código
-    </button>
+    <button class="btn-verify" (click)="verifyOtp()">Verificar código</button>
 
-<div *ngIf="otpError" class="otp-error">{{ otpError }}</div>
-<div *ngIf="otpSuccess" class="otp-success">{{ otpSuccess }}</div>
-
+    <div *ngIf="otpError" class="otp-error">{{ otpError }}</div>
+    <div *ngIf="otpSuccess" class="otp-success">{{ otpSuccess }}</div>
   </div>
 </div>
-
-
 
 <div class="login-container">
   <div class="flip-card-container">
     <div class="flip-card" [class.flipped]="isRegisterMode">
 
+      <!-- FRONT: LOGIN -->
       <div class="flip-card-face flip-card-front glass">
         <div class="login-card">
-          
-          <div class="logo-wrapper">
-            <div><img src="logo.png"></div>
-          </div>
+          <div class="logo-wrapper"><div><img src="logo.png"></div></div>
           <h1>¡Bienvenido de nuevo!</h1>
           <p class="subtitle">Ingresa tus datos para continuar</p>
 
           <form class="login-form" (ngSubmit)="login()">
             <div class="form-group">
               <label>Correo electrónico</label>
-              <input 
-                type="email"
-                [(ngModel)]="email"
-                name="email"
-                #emailRef="ngModel"
-                required
-                email
-                placeholder="ejemplo@correo.com"
-                [ngClass]="getInputClass(emailRef)"
-              />
-
-              <div class="error-text" *ngIf="emailRef.touched && emailRef.invalid">
-                Correo inválido
-              </div>
+              <input type="email" [(ngModel)]="email" name="email" #emailRef="ngModel"
+                     required email placeholder="ejemplo@correo.com"
+                     [ngClass]="getInputClass(emailRef)"/>
+              <div class="error-text" *ngIf="emailRef.touched && emailRef.invalid">Correo inválido</div>
             </div>
 
             <div class="form-group">
               <label>Contraseña</label>
-              <input 
-                type="password"
-                [(ngModel)]="password"
-                name="password"
-                #passwordRef="ngModel"
-                required
-                minlength="6"
-                placeholder="Mínimo 6 caracteres"
-                [ngClass]="getInputClass(passwordRef)"
-              />
-
-              <div class="error-text" *ngIf="passwordRef.touched && passwordRef.invalid">
-                Mínimo 6 caracteres
-              </div>
+              <input type="password" [(ngModel)]="password" name="password" #passwordRef="ngModel"
+                     required minlength="6" placeholder="Mínimo 6 caracteres"
+                     [ngClass]="getInputClass(passwordRef)"/>
+              <div class="error-text" *ngIf="passwordRef.touched && passwordRef.invalid">Mínimo 6 caracteres</div>
             </div>
 
             <button type="submit" class="btn-login" [disabled]="isLoading">
@@ -109,84 +70,51 @@
             </button>
 
             <button type="button" class="btn-google" (click)="loginWithGoogle()">
-              <span class="google-icon"></span>
-              <span>Iniciar con Google</span>
+              <span class="google-icon"></span><span>Iniciar con Google</span>
             </button>
+            <div *ngIf="errorMessageLogin" class="error-text">{{ errorMessageLogin }}</div>
           </form>
 
           <div class="extra-links">
             <a href="#" class="forgot-link">¿Olvidaste tu contraseña?</a>
-            <p class="signup-text">
-              ¿No tienes cuenta? 
+            <p class="signup-text">¿No tienes cuenta? 
               <a href="#" (click)="toggleMode(); $event.preventDefault()" class="signup-link">Regístrate aquí</a>
             </p>
           </div>
         </div>
       </div>
 
-      <!-- Cara trasera: REGISTRO -->
+      <!-- BACK: REGISTER -->
       <div class="flip-card-face flip-card-back glass">
         <div class="login-card">
-          <div class="logo-wrapper">
-            <div><img src="logo.png" alt=""></div>
-          </div>
-
+          <div class="logo-wrapper"><div><img src="logo.png" alt=""></div></div>
           <h1>¡Únete ahora!</h1>
           <p class="subtitle">Crea tu cuenta en segundos</p>
 
           <form class="login-form" (ngSubmit)="register()">
-
             <div class="form-group">
               <label>Correo electrónico</label>
-              <input 
-                type="email"
-                [(ngModel)]="regEmail"
-                name="regEmail"
-                #regEmailRef="ngModel"
-                required
-                email
-                placeholder="ejemplo@correo.com"
-                [ngClass]="getInputClass(regEmailRef)"
-              />
-
-              <div class="error-text" *ngIf="regEmailRef.touched && regEmailRef.invalid">
-                Correo inválido
-              </div>
+              <input type="email" [(ngModel)]="regEmail" name="regEmail" #regEmailRef="ngModel"
+                     required email placeholder="ejemplo@correo.com"
+                     [ngClass]="getInputClass(regEmailRef)"/>
+              <div class="error-text" *ngIf="regEmailRef.touched && regEmailRef.invalid">Correo inválido</div>
             </div>
 
             <div class="form-group">
               <label>Contraseña</label>
-              <input 
-                type="password"
-                [(ngModel)]="regPassword"
-                name="regPassword"
-                #regPasswordRef="ngModel"
-                required
-                minlength="6"
-                placeholder="Crea una contraseña segura"
-                [ngClass]="getInputClass(regPasswordRef)"
-              />
-
-              <div class="error-text" *ngIf="regPasswordRef.touched && regPasswordRef.invalid">
-                Mínimo 6 caracteres
-              </div>
+              <input type="password" [(ngModel)]="regPassword" name="regPassword" #regPasswordRef="ngModel"
+                     required minlength="6" placeholder="Crea una contraseña segura"
+                     [ngClass]="getInputClass(regPasswordRef)"/>
+              <div class="error-text" *ngIf="regPasswordRef.touched && regPasswordRef.invalid">Mínimo 6 caracteres</div>
             </div>
 
             <div class="form-group">
               <label>Confirmar contraseña</label>
-              <input 
-                type="password"
-                [(ngModel)]="confirmPassword"
-                name="confirmPassword"
-                #confirmPasswordRef="ngModel"
-                required
-                placeholder="Confirma tu contraseña"
-                [ngClass]="getInputClass(confirmPasswordRef)"
-              />
-
-              <div class="error-text" *ngIf="confirmPasswordRef.touched && regPassword !== confirmPassword">
-                Las contraseñas no coinciden
-              </div>
+              <input type="password" [(ngModel)]="confirmPassword" name="confirmPassword" #confirmPasswordRef="ngModel"
+                     required placeholder="Confirma tu contraseña"
+                     [ngClass]="getInputClass(confirmPasswordRef)"/>
+              <div class="error-text" *ngIf="confirmPasswordRef.touched && confirmPasswordRef.invalid">Campo requerido</div>
+              <div class="error-text" *ngIf="confirmPasswordRef.touched && regPassword !== confirmPassword">Las contraseñas no coinciden</div>
             </div>
 
             <button type="submit" class="btn-login" [disabled]="isLoading">
@@ -195,9 +123,11 @@
             </button>
           </form>
 
+          <div *ngIf="successMessageRegister" class="success-text">{{ successMessageRegister }}</div>
+          <div *ngIf="errorMessageRegister" class="error-text">{{ errorMessageRegister }}</div>
+
           <div class="extra-links">
-            <p class="signup-text">
-              ¿Ya tienes cuenta? 
+            <p class="signup-text">¿Ya tienes cuenta? 
               <a href="#" (click)="toggleMode(); $event.preventDefault()" class="signup-link">Inicia sesión</a>
             </p>
           </div>

@@ -275,8 +275,16 @@ input:focus {
 
 .error-text {
   color: #ff4d4f;
-  font-size: 0.8rem;
+  font-size: 1rem;
   margin-top: 4px;
+}
+
+
+
+.success-text {
+  color: rgb(0, 0, 0);
+  font-weight: bold;
+  margin-top: 0.5rem;
 }
 
 .message {

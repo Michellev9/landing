@@ -27,7 +27,10 @@ export class Login implements OnInit, OnDestroy {
   isRegisterMode: boolean = false;
 
   errorMessage: string = '';
+  errorMessageLogin: string = '';
   successMessage: string = '';
+  errorMessageRegister: string = '';
+  successMessageRegister: string = '';
 
 otpCode: string = '';
 showOtpInput: boolean = false;
@@ -105,71 +108,26 @@ mfaVerificationId: string = '';
     this.isRegisterMode = !this.isRegisterMode;
   }
 
-async login() {
-  this.errorMessage = '';
-  this.otpError = '';
-  this.isLoading = true;
+  async login() {
+    this.errorMessageLogin = '';
+    this.otpError = '';
+    this.isLoading = true;
 
-  try {
-    await signInWithEmailAndPassword(
-      this.auth,
-      this.email,
-      this.password
-    );
-
-    this.router.navigate(['/admin/dashboard']);
-
-  } catch (err: any) {
-
-    if (err.code === 'auth/multi-factor-auth-required') {
-
-      console.log('✅ MFA detectado (Email)');
-
-      this.resolver = getMultiFactorResolver(this.auth, err);
-
-      if (!this.resolver.hints || this.resolver.hints.length === 0) {
-        this.errorMessage = 'No hay factores MFA registrados';
-        return;
-      }
-
-      const phoneInfo = this.resolver.hints[0];
-      const phoneAuthProvider = new PhoneAuthProvider(this.auth);
-
-      try {
-
-        this.verificationId = await phoneAuthProvider.verifyPhoneNumber(
-          {
-            multiFactorHint: phoneInfo,
-            session: this.resolver.session
-          },
-          this.recaptchaVerifier
-        );
-
-        console.log('✅ SMS enviado');
-
-        this.showOtpInput = true; // ✅ SOLO ESTA
-
-      } catch (mfaError) {
-        console.error('❌ Error enviando SMS:', mfaError);
-        this.errorMessage = 'No se pudo enviar el código';
-      }
-
-    } else {
-      console.error(err);
-
+    try {
+      await signInWithEmailAndPassword(this.auth, this.email, this.password);
+      this.router.navigate(['/admin/dashboard']);
+    } catch (err: any) {
       if (err.code === 'auth/user-not-found') {
-        this.errorMessage = 'Usuario no registrado';
+        this.errorMessageLogin = 'Usuario no registrado';
       } else if (err.code === 'auth/wrong-password') {
-        this.errorMessage = 'Contraseña incorrecta';
+        this.errorMessageLogin = 'Contraseña incorrecta';
       } else {
-        this.errorMessage = 'Error al iniciar sesión';
+        this.errorMessageLogin = 'Error al iniciar sesión';
       }
+    } finally {
+      this.isLoading = false;
     }
-
-  } finally {
-    this.isLoading = false;
   }
-}
 
 async verifyOtp() {
   this.otpError = '';
@@ -306,11 +264,11 @@ getInputClass(input: any) {
 
 
 async register() {
-  this.errorMessage = '';
-  this.successMessage = '';
+  this.errorMessageRegister = '';
+  this.successMessageRegister = '';
 
   if (!this.regEmail || !this.regPassword || !this.confirmPassword) {
-    this.errorMessage = 'Completa los campos';
+    this.errorMessageRegister = 'Completa los campos';
     return;
   }
 
@@ -322,7 +280,6 @@ async register() {
   this.isLoading = true;
 
   try {
-
     const userCredential = await createUserWithEmailAndPassword(
       this.auth,
       this.regEmail,
@@ -339,18 +296,21 @@ async register() {
 
     await sendEmailVerification(userCredential.user);
 
-    this.successMessage = 'Cuenta creada. Verifica tu correo';
+    this.successMessageRegister = '¡Cuenta creada correctamente!';
 
     setTimeout(() => {
-      this.showPhoneModal = true;
-    }, 1500);
+      this.successMessageRegister = '';
+      this.isRegisterMode = false;
+    }, 2000);
 
   } catch (error: any) {
-    this.errorMessage = 'Error al registrarse';
+    this.errorMessageRegister = 'Error al registrarse';
   } finally {
     this.isLoading = false;
   }
 }
+
+
 
 
 showMessage(message: string, type: 'success' | 'error') {
