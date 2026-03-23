@@ -18,7 +18,6 @@
 </div>
 
 
-<!-- HERO / INICIO -->
 <section id="inicio" class="hero glass">
   <div class="hero-content">
     <h1>StarNutri: Aprendizaje Nutricional Infantil</h1>
@@ -42,7 +41,6 @@
   </div>
 </section>
 
-<!-- PERFILES -->
 <section id="perfiles" class="section profiles">
   <div class="section-title-glass glass reveal">
     <h1>Dos Perfiles, Una Solución Completa</h1>
@@ -93,7 +91,6 @@
   </div>
 </section>
 
-<!-- NOSOTROS -->
 <section id="nosotros" class="section about">
   <div class="about-grid glass reveal">
     <div class="about-text reveal">
@@ -120,7 +117,6 @@
   </div>
 </section>
 
-<!-- CÓMO FUNCIONA -->
 <section id="como-funciona" class="section how-it-works">
   <div class="section-title-glass glass reveal">
     <h1>¿Cómo funciona StarNutri?</h1>
@@ -151,12 +147,10 @@
       <h4>Recibe recomendaciones personalizadas</h4>
       <p>Obtén sugerencias nutricionales inteligentes para mejorar sus hábitos.</p>
     </div>
-
   </div>
 
   <div class="carousel reveal">
     <div class="track">
-      <!-- Reemplaza con tus capturas reales -->
       <div class="carousel-card"><img src="screen1.png" alt=""></div>
       <div class="carousel-card"><img src="screen2.png" alt=""></div>
       <div class="carousel-card"><img src="screen3.png" alt=""></div>
@@ -169,7 +163,6 @@
 </section>
 
 
-<!-- PLANES -->
 <section id="planes" class="section plans">
   <div class="section-title-glass glass reveal">
     <h1>Elige el plan que mejor se adapte a tu familia</h1>
@@ -202,7 +195,7 @@
         <li>Juegos avanzados</li>
         <li class="no">Sin reportes muy detallados</li>
       </ul>
-      <button class="btn-primary">Comenzar Ahora</button>
+      <button class="btn-primary" (click)="irLogin()">Comenzar Ahora</button>
     </div>
 
     <div class="card plan-familiar glass reveal">
@@ -216,14 +209,12 @@
         <li>Seguimiento avanzado</li>
         <li>Acceso total a juegos</li>
       </ul>
-      <button class="btn-primary">Comenzar Ahora</button>
+      <button class="btn-primary" (click)="irLogin()">Comenzar Ahora</button>
     </div>
   </div>
 </section>
 
-<!-- CONTACTO -->
 <section id="contacto" class="section contact">
-
   <div class="contact-container glass">
     <div class="contact-info reveal">
       <h1>Contáctanos</h1>
@@ -241,19 +232,71 @@
       </div>
     </div>
 
-    <form class="contact-form reveal">
+    <form class="contact-form reveal" #contactNgForm="ngForm" (ngSubmit)="enviarMensaje(contactNgForm)">
       <h2>Envíanos un mensaje</h2>
-      <input type="text" placeholder="Nombre completo" required>
-      <input type="email" placeholder="Correo electrónico" required>
-      <select required>
-        <option value="" disabled selected>Tipo de consulta</option>
-        <option>Padre de familia</option>
-        <option>Escuela / Institución</option>
-        <option>Soporte</option>
-        <option>Otro</option>
-      </select>
-      <textarea rows="5" placeholder="Escribe tu mensaje" required></textarea>
-      <button class="btn-primary btn-enviar">Enviar mensaje</button>
+
+      <div class="form-group">
+        <input
+          type="text"
+          name="nombre"
+          placeholder="Nombre completo"
+          required
+          ngModel
+          #nombreRef="ngModel"
+          [ngClass]="getInputClass(nombreRef)"
+        />
+        <small *ngIf="nombreRef.touched && nombreRef.invalid">El nombre es obligatorio</small>
+      </div>
+
+      <div class="form-group">
+        <input
+          type="email"
+          name="correo"
+          placeholder="Correo electrónico"
+          required
+          email
+          ngModel
+          #correoRef="ngModel"
+          [ngClass]="getInputClass(correoRef)"
+        />
+        <small *ngIf="correoRef.touched && correoRef.invalid">Correo inválido</small>
+      </div>
+
+      <div class="form-group">
+        <select
+          name="tipo"
+          required
+          ngModel
+          #tipoRef="ngModel"
+          [ngClass]="getInputClass(tipoRef)"
+        >
+          <option value="" disabled selected>Tipo de consulta</option>
+          <option>Padre de familia</option>
+          <option>Escuela / Institución</option>
+          <option>Soporte</option>
+          <option>Otro</option>
+        </select>
+        <small *ngIf="tipoRef.touched && tipoRef.invalid">Selecciona una opción</small>
+      </div>
+
+      <div class="form-group">
+        <textarea
+          rows="5"
+          name="mensaje"
+          placeholder="Escribe tu mensaje"
+          required
+          ngModel
+          #mensajeRef="ngModel"
+          [ngClass]="getInputClass(mensajeRef)"
+        ></textarea>
+        <small *ngIf="mensajeRef.touched && mensajeRef.invalid">El mensaje es obligatorio</small>
+      </div>
+
+      <button type="submit" class="btn-primary btn-enviar">Enviar mensaje</button>
+
+      <p class="feedback" *ngIf="mensajeEnviado">¡Mensaje enviado correctamente!</p>
+
+      <p class="feedback-error" *ngIf="mensajeError">{{ mensajeError }}</p>
     </form>
   </div>
 </section>

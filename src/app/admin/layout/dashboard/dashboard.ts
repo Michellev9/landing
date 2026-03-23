@@ -1,7 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { Firestore, collection, getDocs } from '@angular/fire/firestore';
+import { Firestore, collection, query, orderBy, limit, getDocs } from '@angular/fire/firestore';
 import { CommonModule } from '@angular/common';
 import Chart from 'chart.js/auto';
+import { Router } from '@angular/router';
+
 
 interface Usuario {
   id: string;
@@ -28,11 +30,13 @@ export class Dashboard implements OnInit {
   ultimosUsuarios: Usuario[] = [];
   vistasChart: any;
   rolesChart: any;
+  ultimosMensajes: any[] = [];
 
-  constructor(private firestore: Firestore) {}
+  constructor(private firestore: Firestore, private router: Router) {}
 
   async ngOnInit() {
     await this.obtenerUsuariosDashboard();
+    this.cargarUltimosMensajes();
   }
 
   ngAfterViewInit() {
@@ -168,6 +172,26 @@ actualizarGraficas() {
   this.crearGraficaVistas();
   this.crearGraficaRoles();
 }
+
+
+  async cargarUltimosMensajes() {
+    const mensajesRef = collection(this.firestore, 'contacto');
+    const q = query(mensajesRef, orderBy('fecha', 'desc'), limit(5));
+    const snapshot = await getDocs(q);
+    this.ultimosMensajes = snapshot.docs.map(doc => ({
+    id: doc.id,
+    ...doc.data() as any
+  }));
+  }
+
+  verUsuario(email: string) {
+  this.router.navigate(['/admin/gestion-usuarios', email]);
+}
+
+  verMensaje(correo: string) {
+  this.router.navigate(['/admin/gestion-contacto', correo]);
+}
+
 
 
 }

@@ -1,7 +1,7 @@
 <div class="admin-container">
   <div class="glass dashboard-wrapper">
     <div class="card-header">
-      <h2 class="title">Dashboard</h2>
+      <h2 class="title">Panel Administrativo</h2>
       <p class="subtitle">Resumen general del sistema</p>
     </div>
 
@@ -25,49 +25,66 @@
       </div>
     </div>
 
-    <div class="dashboard-bottom">
-       <div class="chart-container">
-        <h3 class="section-title">Vistas de usuarios</h3>
-        <canvas id="vistasChart"></canvas>
-      </div>
-      <div class="chart-container">
-        <h3 class="section-title">Usuarios por rol</h3>
-        <canvas id="rolesChart"></canvas>
-      </div>
+<div class="dashboard-bottom">
 
-      <div class="table-wrapper full">
-        <h3 class="section-title">Últimos usuarios</h3>
-
-        <div class="table-scroll">
-          <table class="tabla modern">
-            <thead>
-              <tr>
-                <th>Email</th>
-                <th>Rol</th>
-                <th>Fecha</th>
-              </tr>
-            </thead>
-
-            <tbody>
-              <tr *ngFor="let user of ultimosUsuarios">
-                <td class="email">{{ user.email }}</td>
-                <td><span class="badge">{{ user.rol }}</span></td>
-                <td>{{ user.fecha?.toDate() | date:'short' }}</td>
-              </tr>
-
-              <tr *ngIf="ultimosUsuarios.length === 0">
-                <td colspan="3" class="no-data">
-                  No hay datos disponibles
-                </td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-
-      </div>
-
+  <div class="charts-row">
+    <div class="chart-container">
+      <h3 class="section-title">Vistas de usuarios</h3>
+      <canvas id="vistasChart"></canvas>
     </div>
 
+    <div class="chart-container">
+      <h3 class="section-title">Usuarios por rol</h3>
+      <canvas id="rolesChart"></canvas>
+    </div>
+  </div>
+
+  <div class="tables-row">
+    <div class="table-wrapper">
+      <h3 class="section-title">Últimos usuarios registrados</h3>
+      <div class="table-scroll">
+        <table class="tabla modern">
+          <thead>
+            <tr>
+              <th>Email</th>
+              <th>Fecha</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let user of ultimosUsuarios" 
+                (click)="verUsuario(user.email)" 
+                class="clickable-row">
+              <td class="email">{{ user.email }}</td>
+              <td>{{ user.fecha?.toDate() | date:'short' }}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="table-wrapper">
+      <h3 class="section-title">Últimos mensajes de contacto</h3>
+      <div class="table-scroll">
+        <table class="tabla modern">
+          <thead>
+            <tr>
+              <th>Consulta</th>
+              <th>Mensaje</th>
+            </tr>
+          </thead>
+          <tbody>
+              <tr *ngFor="let msg of ultimosMensajes" 
+                (click)="verMensaje(msg.correo)" 
+                class="clickable-row">
+              <td>{{ msg.tipo }}</td>
+              <td class="truncate">{{ msg.mensaje }}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
   </div>
 
 </div>

@@ -6,6 +6,7 @@ import { Login } from './auth/login/login';
 import { Dashboard } from './admin/layout/dashboard/dashboard';
 import { Configuracion } from './admin/layout/configuracion/configuracion';
 import { GestionUsuarios } from './admin/layout/gestion-usuarios/gestion-usuarios';
+import { GestionContacto } from './admin/layout/gestion-contacto/gestion-contacto';
 
 
 export const routes: Routes = [
@@ -25,6 +26,9 @@ export const routes: Routes = [
 
       { path: 'dashboard', component: Dashboard },
       { path: 'gestion-usuarios', component: GestionUsuarios },
+      { path: 'gestion-usuarios/:email', component: GestionUsuarios},
+      { path: 'gestion-contacto', component: GestionContacto },
+      { path: 'gestion-contacto/:correo', component: GestionContacto },
       { path: 'configuracion', component: Configuracion },
       { path: '', redirectTo: 'dashboard', pathMatch: 'full' }
     ]

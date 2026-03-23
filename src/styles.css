@@ -36,7 +36,7 @@ body.dark .card-header-config {
 }
 
 body.dark .card-header h3{
-  color: #f1f5f9;
+  color: #ffffff;
 }
 
 
@@ -67,8 +67,8 @@ body.dark .chart-container{
   border: 1px solid rgba(255,255,255,0.08);
 }
 
-body.dark .table-wrapper.full {
-  background: rgba(69, 72, 80, 0.525);
+body.dark .table-wrapper {
+  background: rgba(15, 23, 42, 0.65);
   border: 1px solid rgba(255,255,255,0.08);
 }
 
@@ -91,12 +91,11 @@ body.dark .tabla tr.selected {
 }
 
 body.dark .tabla thead th {
-  background: rgba(69, 72, 80, 0.525);
-  color: #94a3b8;
+  background: rgb(47, 50, 59);
 }
 
 body.dark .tabla td {
-  background: rgb(46, 50, 61);
+  background: rgb(30, 34, 43);
 }
 
 body.dark .tabla tr {
@@ -120,6 +119,10 @@ body.dark .badge-selected {
   background: #34d399;
   color: #022c22;
 }
+
+body.dark .modal-content textarea{
+  background: rgba(15, 23, 42, 0.95);
+  border: 1px solid rgba(255,255,255,0.1);}
 
 body.dark .btn {
 background: linear-gradient(135deg, rgb(52, 211, 153), rgb(74, 222, 128));  color: white;
@@ -175,14 +178,12 @@ body.dark .btn.secondary {
 
 body.dark input,
 body.dark select {
-  background: rgba(30,41,59,0.8);
+  background: transparent;
   color: #f1f5f9;
   border: 1px solid rgba(255,255,255,0.1);
 }
 
-body.dark input::placeholder {
-  color: #94a3b8;
-}
+
 
 body.dark .search-container {
   border: 1px solid rgba(255,255,255,0.15);

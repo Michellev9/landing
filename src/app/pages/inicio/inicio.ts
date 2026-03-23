@@ -2,13 +2,19 @@ import { AfterViewInit, Component, HostListener, OnInit, OnDestroy, NgZone, Chan
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { CommonModule } from '@angular/common';
+import { Router } from '@angular/router';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Firestore, collection, addDoc } from '@angular/fire/firestore';
+import { ReactiveFormsModule } from '@angular/forms';
+import { NgForm, NgModel } from '@angular/forms';
+import { FormsModule } from '@angular/forms';
 
 gsap.registerPlugin(ScrollTrigger);
 
 @Component({
   selector: 'app-inicio',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, ReactiveFormsModule, FormsModule],
   templateUrl: './inicio.html',
   styleUrls: ['./inicio.css'],
 })
@@ -16,23 +22,25 @@ gsap.registerPlugin(ScrollTrigger);
 
 export class Inicio implements OnInit, OnDestroy, AfterViewInit {
 
+    contactForm: FormGroup;
+    mensajeEnviado = false;
+    mensajeError = ''; 
+    
+
   ngAfterViewInit(): void {
-    this.initAnimations();     // 🔥 GSAP
+    this.initAnimations();
     this.initIntersection();
     this.initCounters();
   }
 
-  /* ================= GSAP ================= */
   initAnimations() {
 
-  /* ================= HERO ================= */
   gsap.from('.hero-content h1', { y: 60, opacity: 0, duration: 1 });
   gsap.from('.hero-content p', { y: 40, opacity: 0, duration: 1, delay: .2 });
   gsap.from('.store-buttons', { y: 30, opacity: 0, duration: 1, delay: .4 });
   gsap.from('.hero-image img', { x: 120, opacity: 0, duration: 1.2, delay: .3 });
 
 
-  /* ================= REVEALS (REPETIBLES) ================= */
   gsap.utils.toArray('.reveal-left').forEach((el: any) => {
     gsap.fromTo(el,
       { x: -80, opacity: 0 },
@@ -88,10 +96,8 @@ export class Inicio implements OnInit, OnDestroy, AfterViewInit {
   });
 
 
-  /* ================= SECCIONES (SOLUCION AL TRABADO) ================= */
   gsap.utils.toArray('.section').forEach((section: any) => {
 
-    // ENTRADA SUAVE
     gsap.fromTo(section,
       { opacity: 0, y: 80 },
       {
@@ -107,7 +113,6 @@ export class Inicio implements OnInit, OnDestroy, AfterViewInit {
       }
     );
 
-    // 🔥 FADE OUT (lo que te faltaba)
     gsap.to(section, {
       opacity: 0.3,
       scrollTrigger: {
@@ -164,7 +169,42 @@ export class Inicio implements OnInit, OnDestroy, AfterViewInit {
     
   ];
 
-  constructor(private ngZone: NgZone, private cdr: ChangeDetectorRef) { }
+  constructor(private ngZone: NgZone, private cdr: ChangeDetectorRef, private router: Router, private fb: FormBuilder, private firestore: Firestore) {
+    this.contactForm = this.fb.group({
+      nombre: ['', Validators.required],
+      correo: ['', [Validators.required, Validators.email]],
+      tipo: ['', Validators.required],
+      mensaje: ['', Validators.required]
+    });
+   }
+
+   campoInvalido(campo: string) {
+    const control = this.contactForm.get(campo);
+    return control?.invalid && control?.touched;
+  }
+
+async enviarMensaje(form: NgForm) {
+  if (form.invalid) {
+    form.control.markAllAsTouched();
+    this.mensajeError = 'Por favor completa todos los campos correctamente';
+    return;
+  }
+
+  try {
+    const ref = collection(this.firestore, 'contacto');
+    await addDoc(ref, { ...form.value, fecha: new Date() });
+
+    this.mensajeEnviado = true;
+    this.mensajeError = '';
+    form.resetForm();
+
+    setTimeout(() => (this.mensajeEnviado = false), 4000);
+  } catch (error) {
+    console.error('Error al enviar mensaje:', error);
+    this.mensajeError = 'Error al enviar mensaje. Intenta de nuevo más tarde';
+  }
+}
+
 
   ngOnInit() {
     if (typeof window !== 'undefined') {
@@ -211,8 +251,6 @@ export class Inicio implements OnInit, OnDestroy, AfterViewInit {
 
   animationLoop() {
     let needsUpdate = false;
-
-    // Smooth Scroll Y LERP
     if (Math.abs(this.targetScrollY - this.currentScrollY) > 0.1) {
       this.currentScrollY += (this.targetScrollY - this.currentScrollY) * 0.08;
       needsUpdate = true;
@@ -220,7 +258,6 @@ export class Inicio implements OnInit, OnDestroy, AfterViewInit {
       this.currentScrollY = this.targetScrollY;
     }
 
-    // Smooth Background Movement LERP
     const targetBgMouseX = this.targetMouseX - window.innerWidth / 2;
     const targetBgMouseY = this.targetMouseY - window.innerHeight / 2;
 
@@ -233,12 +270,10 @@ export class Inicio implements OnInit, OnDestroy, AfterViewInit {
       needsUpdate = true;
     }
 
-    // Floating Items Parallax & Repel LERP
     const repelRadius = 180;
     this.floatingItems.forEach(item => {
-      // 1. Scroll Parallax
       let newTop = item.baseTop - (this.currentScrollY * item.parallaxSpeed);
-      const range = 140; // -20 to 120
+      const range = 140;
       let offset = (newTop + 20) % range;
       if (offset < 0) offset += range;
 
@@ -248,7 +283,6 @@ export class Inicio implements OnInit, OnDestroy, AfterViewInit {
         needsUpdate = true;
       }
 
-      // 2. Mouse Repel
       if (!item.interactive) return;
 
       const itemX = (window.innerWidth * item.left) / 100;
@@ -346,5 +380,17 @@ initCounters() {
 
   counters.forEach(counter => observer.observe(counter));
 }
+
+irLogin() {
+    this.router.navigate(['/login']);
+  }
+
+  getInputClass(control: NgModel) {
+    if (control.touched && control.invalid) return 'input-invalid'; // rojo
+    if (control.touched && control.valid) return 'input-valid';     // verde
+    if (control.touched) return 'input-touched';                   // azul
+    return '';
+  }
+
 
 }

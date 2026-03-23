@@ -1,0 +1,126 @@
+<div class="admin-container">
+  <div class="table-wrapper glass">
+    <div class="card-header">
+      <h2 class="title">Gestión de Contacto</h2>
+      <p class="subtitle">
+        Administra los mensajes recibidos desde el formulario de contacto.
+      </p>
+    </div>
+
+    <div class="modal" *ngIf="showDetailModal">
+    <div class="modal-content glass">
+        <h3>Detalle del mensaje</h3>
+        <p><strong>Nombre:</strong> {{ mensajeSeleccionado?.nombre }}</p>
+        <p><strong>Email:</strong> {{ mensajeSeleccionado?.correo }}</p>
+        <p><strong>Consulta:</strong> {{ mensajeSeleccionado?.tipo }}</p>
+        <p><strong>Mensaje:</strong></p>
+        <p>{{ mensajeSeleccionado?.mensaje }}</p>
+        <p><strong>Fecha:</strong> {{ mensajeSeleccionado?.fecha | date:'short' }}</p>
+
+        <textarea [(ngModel)]="respuestaTexto" placeholder="Escribe tu respuesta..." rows="4"></textarea>
+
+        <div class="modal-actions">
+        <button class="btn secondary" (click)="showDetailModal = false">Cerrar</button>
+        <button class="btn edit" (click)="responderMensaje()">Responder</button>
+        </div>
+    </div>
+    </div>
+
+
+    <div class="modal" *ngIf="showDeleteModal">
+      <div class="modal-content glass delete-modal">
+        <div class="icon-warning">⚠️</div>
+        <h3>Eliminar mensajes</h3>
+        <p>
+          ¿Estás seguro que deseas eliminar 
+          <strong>{{ selectedMensajes.length }}</strong> mensaje(s)?
+        </p>
+        <small class="warning-text">Esta acción no se puede deshacer</small>
+        <div class="modal-actions">
+          <button class="btn secondary" (click)="showDeleteModal = false">Cancelar</button>
+          <button class="btn delete" (click)="eliminarSeleccionadosConfirmado()">Sí, eliminar</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="toolbar">
+      <div class="search-container">
+        <input 
+          type="text"
+          placeholder="Buscar por nombre o correo..."
+          [(ngModel)]="searchText"
+          (ngModelChange)="filtrarMensajes()"  
+        />
+      </div>
+      <div class="selected-info">
+        <span class="badge-selected">
+          {{ selectedMensajes.length }} seleccionados
+        </span>
+      </div>
+      <div class="actions">
+        <button 
+          class="btn edit"
+          [disabled]="selectedMensajes.length !== 1"
+          (click)="abrirDetalle()">
+          Resolver
+        </button>
+        <button 
+          class="btn delete"
+          [disabled]="selectedMensajes.length === 0"
+          (click)="showDeleteModal = true">
+           Eliminar
+        </button>
+      </div>
+    </div>
+
+    <div class="table-scroll">
+      <table class="tabla">
+        <thead>
+          <tr>
+            <th>
+              <input 
+                type="checkbox"
+                [checked]="todosSeleccionados"
+                (change)="toggleSeleccionarTodos($event)"
+              />
+            </th>
+            <th>Nombre</th>
+            <th>Email</th>
+            <th>Consulta</th>
+            <th>Mensaje</th>
+            <th>Fecha</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr 
+            *ngFor="let msg of mensajesPaginados"
+            [class.selected]="isSelected(msg)"
+          >
+            <td>
+              <input 
+                type="checkbox"
+                [checked]="isSelected(msg)"
+                (change)="toggleSelection(msg)"
+              />
+            </td>
+            <td>{{ msg.nombre }}</td>
+            <td>{{ msg.correo }}</td>
+            <td><span class="badge">{{ msg.tipo }}</span></td>
+            <td class="truncate" title="{{ msg.mensaje }}">{{ msg.mensaje }}</td>
+            <td>{{ msg.fecha | date:'short' }}</td>
+          </tr>
+
+          <tr *ngIf="mensajesFiltradosList.length === 0">
+            <td colspan="6" class="no-data">No se encontraron mensajes</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="pagination">
+      <button (click)="cambiarPagina(currentPage - 1)" [disabled]="currentPage === 1">⬅</button>
+      <span>Página {{ currentPage }} de {{ totalPaginas }}</span>
+      <button (click)="cambiarPagina(currentPage + 1)" [disabled]="currentPage === totalPaginas">➡</button>
+    </div>
+  </div>
+</div>

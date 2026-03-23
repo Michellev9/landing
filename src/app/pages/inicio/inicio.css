@@ -707,6 +707,18 @@
   transform: scale(0.97);
 }
 
+.feedback {
+  color: rgb(0, 0, 0);
+  font-weight: bold;
+  margin-top: 0.5rem;
+}
+
+small{
+  color: red;
+}
+
+
+
 
 
 @media (max-width: 1024px) {
