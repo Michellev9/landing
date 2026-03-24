@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { NgFor, NgIf, DatePipe } from '@angular/common';
 import { Firestore, collection, collectionData, doc, deleteDoc, query, orderBy } from '@angular/fire/firestore';
+import emailjs from 'emailjs-com';
 
 @Component({
   selector: 'app-gestion-contacto',
@@ -98,26 +99,44 @@ isSelected(msg: any) {
     this.filtrarMensajes();
   }
 
-  async responderMensaje() {
-    if (!this.respuestaTexto.trim()) {
-      alert('Debes escribir una respuesta antes de enviar.');
-      return;
-    }
-
-    try {
-      console.log(`Respuesta para ${this.mensajeSeleccionado.correo}: ${this.respuestaTexto}`);
-
-      const docRef = doc(this.firestore, 'contacto', this.mensajeSeleccionado.id);
-      await deleteDoc(docRef);
-
-      this.showDetailModal = false;
-      this.respuestaTexto = '';
-      this.selectedMensajes = [];
-      this.filtrarMensajes();
-
-    } catch (error) {
-      console.error('Error al responder/eliminar mensaje:', error);
-    }
+async responderMensaje() {
+  if (!this.respuestaTexto.trim()) {
+    alert('Debes escribir una respuesta antes de enviar.');
+    return;
   }
+
+  try {
+    const templateParams = {
+      name: this.mensajeSeleccionado.nombre,
+      to_email: this.mensajeSeleccionado.correo,
+      mensaje: this.mensajeSeleccionado.mensaje,
+      respuesta: this.respuestaTexto
+    };
+
+    await emailjs.send(
+      'service_b009pwa',
+      'template_6dg04pl',
+      templateParams,
+      'UooWkBKegZCGz9Epo'
+    );
+
+    console.log(`Correo enviado a ${this.mensajeSeleccionado.correo}`);
+
+    const docRef = doc(this.firestore, 'contacto', this.mensajeSeleccionado.id);
+    await deleteDoc(docRef);
+
+    this.showDetailModal = false;
+    this.respuestaTexto = '';
+    this.selectedMensajes = [];
+    this.filtrarMensajes();
+
+
+  } catch (error) {
+    console.error('Error al enviar la respuesta:', error);
+    alert('Hubo un error al enviar el correo');
+  }
+}
+
+  
 
 }

@@ -149,7 +149,6 @@ async verifyOtp() {
     const multiFactorAssertion =
       PhoneMultiFactorGenerator.assertion(cred);
 
-    // 🔥 ENROLL (cuando viene del registro)
     if (this.mfaVerificationId) {
       const user = this.auth.currentUser;
       if (!user) return;
@@ -159,7 +158,6 @@ async verifyOtp() {
         'Teléfono'
       );
 
-      // limpiar estados
       this.mfaVerificationId = '';
       this.showOtpInput = false;
       this.otpCode = '';
@@ -169,7 +167,6 @@ async verifyOtp() {
       return;
     }
 
-    // 🔥 LOGIN
     await this.resolver.resolveSignIn(multiFactorAssertion);
 
     this.showOtpInput = false;
@@ -177,7 +174,6 @@ async verifyOtp() {
 
     this.otpSuccess = '✅ Código verificado correctamente. Bienvenido!';
 
-    // redirigir después de mostrar el mensaje
     setTimeout(() => {
       this.otpSuccess = '';
       this.router.navigate(['/admin/dashboard']);
@@ -308,6 +304,8 @@ async register() {
   } finally {
     this.isLoading = false;
   }
+
+  
 }
 
 

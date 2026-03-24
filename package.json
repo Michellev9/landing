@@ -33,6 +33,7 @@
     "@fortawesome/fontawesome-free": "^7.1.0",
     "@tanstack/angular-table": "^8.21.3",
     "chart.js": "^4.5.1",
+    "emailjs-com": "^3.2.0",
     "firebase": "^11.10.0",
     "gsap": "^3.14.2",
     "rxjs": "~7.8.0",
