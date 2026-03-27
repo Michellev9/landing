@@ -7,6 +7,7 @@ import { GoogleAuthProvider, signInWithPopup, fetchSignInMethodsForEmail } from 
 import { multiFactor } from 'firebase/auth';
 import { RecaptchaVerifier, PhoneAuthProvider,PhoneMultiFactorGenerator,MultiFactorResolver, getMultiFactorResolver, sendEmailVerification} from 'firebase/auth';
 import { Firestore, collection, addDoc } from '@angular/fire/firestore';
+import emailjs from 'emailjs-com';
 
 
 @Component({
@@ -35,13 +36,16 @@ export class Login implements OnInit, OnDestroy {
 otpCode: string = '';
 showOtpInput: boolean = false;
 verificationId: string = '';
-resolver!: MultiFactorResolver;
 otpError: string = '';
 otpSuccess: string = '';
 recaptchaVerifier!: RecaptchaVerifier;
 showPhoneModal: boolean = false;
 phoneNumber: string = '';
 mfaVerificationId: string = '';
+otpCodeGenerated: string = '';
+otpCodeInput: string = '';
+showEmailOtp: boolean = false;
+userEmailTemp: string = '';
 
   mouseX = 0;
   mouseY = 0;
@@ -88,14 +92,6 @@ mfaVerificationId: string = '';
         this.animationLoop();
       });
     }
-
-    this.recaptchaVerifier = new RecaptchaVerifier(
-    this.auth,
-    'recaptcha-container',
-    {
-      size: 'invisible'
-    }
-  );
   }
 
   ngOnDestroy() {
@@ -107,6 +103,34 @@ mfaVerificationId: string = '';
     toggleMode() {
     this.isRegisterMode = !this.isRegisterMode;
   }
+
+  generateCode(): string {
+  return Math.floor(100000 + Math.random() * 900000).toString();
+}
+
+async sendCodeEmail(email: string) {
+  this.otpCodeGenerated = this.generateCode();
+  this.userEmailTemp = email;
+
+  try {
+    await emailjs.send(
+      'service_msigwjn',
+      'template_1b4n7vn',
+      {
+        email: email,
+        code: this.otpCodeGenerated
+      },
+      'UooWkBKegZCGz9Epo'
+    );
+
+    console.log('✅ Código enviado:', this.otpCodeGenerated);
+
+    this.showEmailOtp = true;
+
+  } catch (error) {
+    console.error('❌ Error enviando correo:', error);
+  }
+}
 
   async login() {
     this.errorMessageLogin = '';
@@ -129,60 +153,6 @@ mfaVerificationId: string = '';
     }
   }
 
-async verifyOtp() {
-  this.otpError = '';
-  this.otpSuccess = '';
-
-  if (!this.otpCode) {
-    this.otpError = 'Ingresa el código';
-    return;
-  }
-
-  try {
-    const verificationId = this.mfaVerificationId || this.verificationId;
-
-    const cred = PhoneAuthProvider.credential(
-      verificationId,
-      this.otpCode
-    );
-
-    const multiFactorAssertion =
-      PhoneMultiFactorGenerator.assertion(cred);
-
-    if (this.mfaVerificationId) {
-      const user = this.auth.currentUser;
-      if (!user) return;
-
-      await multiFactor(user).enroll(
-        multiFactorAssertion,
-        'Teléfono'
-      );
-
-      this.mfaVerificationId = '';
-      this.showOtpInput = false;
-      this.otpCode = '';
-
-      this.otpSuccess = '✅ MFA activado correctamente';
-
-      return;
-    }
-
-    await this.resolver.resolveSignIn(multiFactorAssertion);
-
-    this.showOtpInput = false;
-    this.otpCode = '';
-
-    this.otpSuccess = '✅ Código verificado correctamente. Bienvenido!';
-
-    setTimeout(() => {
-      this.otpSuccess = '';
-      this.router.navigate(['/admin/dashboard']);
-    }, 1500);
-
-  } catch (error) {
-    this.otpError = 'Código incorrecto o expirado';
-  }
-}
 
 
 async loginWithGoogle() {
@@ -191,54 +161,37 @@ async loginWithGoogle() {
 
   try {
     const provider = new GoogleAuthProvider();
-    await signInWithPopup(this.auth, provider);
+    const result = await signInWithPopup(this.auth, provider);
+
+    const email = result.user.email;
+
+    if (!email) {
+      this.errorMessage = 'No se pudo obtener el correo';
+      return;
+    }
+
+    await this.sendCodeEmail(email);
+
+  } catch (err: any) {
+    console.error(err);
+    this.errorMessage = 'Error con Google';
+  } finally {
+    this.isLoading = false;
+  }
+}
+
+verifyEmailCode() {
+  if (this.otpCodeInput === this.otpCodeGenerated) {
+
+    this.showEmailOtp = false;
+    this.otpCodeInput = '';
+
+    console.log('✅ Código correcto');
 
     this.router.navigate(['/admin/dashboard']);
 
-  } catch (err: any) {
-
-    if (err.code === 'auth/multi-factor-auth-required') {
-
-      console.log('✅ MFA detectado (Google)');
-
-      this.resolver = getMultiFactorResolver(this.auth, err);
-
-      if (!this.resolver.hints || this.resolver.hints.length === 0) {
-        this.errorMessage = 'No hay factores MFA registrados';
-        return;
-      }
-
-      const phoneInfo = this.resolver.hints[0];
-      const phoneAuthProvider = new PhoneAuthProvider(this.auth);
-
-      try {
-
-        this.verificationId = await phoneAuthProvider.verifyPhoneNumber(
-          {
-            multiFactorHint: phoneInfo,
-            session: this.resolver.session
-          },
-          this.recaptchaVerifier
-        );
-
-        console.log('✅ SMS enviado');
-
-        this.showOtpInput = true;
-
-      } catch (mfaError) {
-        console.error('❌ Error MFA:', mfaError);
-        this.errorMessage = 'No se pudo enviar el código';
-      }
-
-    } else if (err.code === 'auth/popup-closed-by-user') {
-      this.errorMessage = 'Cancelaste el inicio con Google';
-    } else {
-      console.error(err);
-      this.errorMessage = 'Error con Google';
-    }
-
-  } finally {
-    this.isLoading = false;
+  } else {
+    this.errorMessage = 'Código incorrecto';
   }
 }
 

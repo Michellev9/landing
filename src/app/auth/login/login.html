@@ -19,21 +19,33 @@
   </div>
 </div>
 
-<!-- MODAL OTP -->
-<div class="otp-modal-backdrop" *ngIf="showOtpInput">
-  <div class="otp-modal glass">
-    <h2>Verificación de seguridad</h2>
-    <p class="otp-subtitle">Ingresa el código enviado a tu celular</p>
+<div *ngIf="showEmailOtp" class="otp-overlay">
 
-    <div class="otp-input-group">
-      <input type="text" maxlength="6" [(ngModel)]="otpCode" placeholder="______" class="otp-input"/>
-    </div>
+  <div class="otp-modal">
 
-    <button class="btn-verify" (click)="verifyOtp()">Verificar código</button>
+    <h2>Verificación</h2>
+    <p class="subtitle">Ingresa el código enviado a tu correo</p>
 
-    <div *ngIf="otpError" class="otp-error">{{ otpError }}</div>
-    <div *ngIf="otpSuccess" class="otp-success">{{ otpSuccess }}</div>
+    <input
+      type="text"
+      maxlength="6"
+      [(ngModel)]="otpCodeInput"
+      placeholder="••••••"
+      class="otp-input"
+    />
+
+    <p class="error" *ngIf="errorMessage">{{errorMessage}}</p>
+
+    <button class="verify-btn" (click)="verifyEmailCode()">
+      Verificar código
+    </button>
+
+    <p class="resend" (click)="sendCodeEmail(userEmailTemp)">
+      Reenviar código
+    </p>
+
   </div>
+
 </div>
 
 <div class="login-container">
@@ -137,4 +149,3 @@
     </div>
   </div>
 </div>
-<div id="recaptcha-container"></div>
